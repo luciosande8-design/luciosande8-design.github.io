@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="WorldClock.live — Exact time worldwide. Time zones, stopwatch, countdown, calendar.">
+<meta property="og:title" content="WorldClock.live">
+<meta property="og:description" content="Real-time world clock. 120+ cities, 80+ countries, 38 time zones.">
+<title>WorldClock.live — Hora Exata no Mundo</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0f'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%2300e5a0' stroke-width='1.5'/%3E%3Cline x1='16' y1='16' x2='23' y2='8' stroke='%2300e5a0' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='16' y1='16' x2='11' y2='22' stroke='%2300b8d4' stroke-width='1.2' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%2300e5a0'/%3E%3Cline x1='16' y1='5' x2='16' y2='8' stroke='%2300e5a0' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='27' y1='16' x2='24' y2='16' stroke='%2300e5a0' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='16' y1='27' x2='16' y2='24' stroke='%2300e5a0' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='5' y1='16' x2='8' y2='16' stroke='%2300e5a0' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00e5a0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WorldClock">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4661901289799501" crossorigin="anonymous"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;--accent:#00e5a0;--accent2:#00b8d4;--text:#f0f0f8;--muted:#8888aa;--border:#2a2a3a;--radius:12px;}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.ad-top{background:var(--surface);border-bottom:2px dashed var(--border);padding:0;text-align:center;width:100%;display:block}
+.ad-top-inner{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 20px;min-height:60px;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(0,229,160,.03) 8px,rgba(0,229,160,.03) 16px)}
+.ad-top-inner .ad-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border:1px dashed var(--muted);border-radius:4px;padding:3px 8px}
+.ad-top-inner .ad-size{font-family:'Space Mono',monospace;font-size:13px;color:var(--accent);font-weight:700}
+.ad-top-inner .ad-info{font-size:11px;color:var(--muted)}
+.ad-sidebar{background:var(--surface);border:2px dashed var(--border);border-radius:var(--radius);text-align:center;min-height:280px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.ad-sidebar::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(0,184,212,.03) 8px,rgba(0,184,212,.03) 16px)}
+.ad-sidebar-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.ad-sidebar-inner .ad-icon{font-size:28px}
+.ad-sidebar-inner .ad-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border:1px dashed var(--muted);border-radius:4px;padding:3px 8px}
+.ad-sidebar-inner .ad-size{font-family:'Space Mono',monospace;font-size:15px;color:var(--accent2);font-weight:700}
+.ad-sidebar-inner .ad-info{font-size:11px;color:var(--muted);max-width:200px;line-height:1.5}
+.ad-footer-wrap{background:var(--surface);border-top:2px dashed var(--border);padding:0}
+.ad-footer-inner{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 20px;min-height:60px;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(0,229,160,.03) 8px,rgba(0,229,160,.03) 16px)}
+.ad-footer-inner .ad-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border:1px dashed var(--muted);border-radius:4px;padding:3px 8px}
+.ad-footer-inner .ad-size{font-family:'Space Mono',monospace;font-size:13px;color:var(--accent);font-weight:700}
+.ad-footer-inner .ad-info{font-size:11px;color:var(--muted)}
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--surface);flex-wrap:wrap;gap:8px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
+.logo-svg{flex-shrink:0}
+.logo-text{display:flex;flex-direction:column;line-height:1.1}
+.logo-text .t1{font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:var(--accent);letter-spacing:-0.5px}
+.logo-text .t2{font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.5px}
+.logo-text .t3{font-family:'Sora',sans-serif;font-size:10px;color:var(--accent2);letter-spacing:1px}
+.nav-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.nav-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab{padding:7px 16px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:'Sora',sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
+.tab.active,.tab:hover{background:var(--surface2);color:var(--text)}
+.tab.active{color:var(--accent)}
+.ctrl-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--muted);cursor:pointer;font-size:12px;font-family:'Sora',sans-serif}
+.lang-select{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--muted);font-family:'Sora',sans-serif;font-size:12px;cursor:pointer}
+.layout{display:grid;grid-template-columns:1fr 300px;gap:20px;padding:20px 24px;max-width:1200px;margin:0 auto}
+.main-clock-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;text-align:center;position:relative;overflow:hidden}
+.main-clock-card::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(0,229,160,.06) 0%,transparent 70%);pointer-events:none}
+.location-label{font-size:13px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.big-time{font-family:'Space Mono',monospace;font-size:72px;font-weight:700;color:var(--text);line-height:1;letter-spacing:-2px}
+.big-time span{color:var(--accent)}
+.date-line{font-size:15px;color:var(--muted);margin-top:12px}
+.tz-badge{display:inline-block;margin-top:10px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:12px;color:var(--accent2);font-family:'Space Mono',monospace}
+.section-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:20px 0 12px;font-weight:600}
+.world-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.city-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;transition:border-color .2s}
+.city-card:hover{border-color:var(--accent)}
+.city-name{font-size:12px;color:var(--muted);margin-bottom:4px}
+.city-time{font-family:'Space Mono',monospace;font-size:17px;font-weight:700;color:var(--text)}
+.city-date{font-size:10px;color:var(--muted);margin-top:2px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px}
+.panel+.panel{margin-top:16px}
+.panel-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.chrono-display{font-family:'Space Mono',monospace;font-size:36px;font-weight:700;color:var(--accent);text-align:center;margin:12px 0}
+.chrono-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.btn{padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:'Sora',sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+.btn.primary:hover{opacity:.85}
+.btn.danger{border-color:#ff4466;color:#ff4466}
+.cd-inputs{display:flex;gap:6px;margin-bottom:12px;justify-content:center}
+.cd-inputs input{width:56px;text-align:center;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 4px;color:var(--text);font-family:'Space Mono',monospace;font-size:18px}
+.cd-inputs span{font-size:20px;line-height:2.2;color:var(--muted)}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-nav{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:4px 8px;border-radius:6px;transition:color .2s}
+.cal-nav:hover{color:var(--accent)}
+.cal-month-lbl{font-size:14px;font-weight:600;color:var(--text)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-dow{font-size:10px;color:var(--muted);text-align:center;padding:4px 0;letter-spacing:.5px}
+.cal-day{font-size:12px;text-align:center;padding:6px 2px;border-radius:6px;cursor:pointer;color:var(--muted);transition:all .2s}
+.cal-day:hover{background:var(--surface2);color:var(--text)}
+.cal-day.today{background:var(--accent);color:#000;font-weight:700;border-radius:50%}
+.cal-day.other-month{opacity:.3}
+.search-bar{display:flex;gap:8px;margin-bottom:16px}
+.search-bar input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--text);font-family:'Sora',sans-serif;font-size:13px}
+.search-bar input::placeholder{color:var(--muted)}
+.search-bar input:focus{outline:none;border-color:var(--accent)}
+.african-tag{font-size:10px;background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.3);border-radius:4px;padding:1px 6px;color:var(--accent);margin-left:4px}
+.region-tag{font-size:10px;background:rgba(0,184,212,.1);border:1px solid rgba(0,184,212,.3);border-radius:4px;padding:1px 6px;color:var(--accent2);margin-left:4px}
+.stats-bar{display:flex;gap:12px;padding:10px 24px;background:var(--surface);border-bottom:1px solid var(--border);font-size:11px;color:var(--muted);flex-wrap:wrap}
+.stats-bar span{color:var(--accent)}
+.page{display:none}
+.page.active{display:block}
+select option{background:#1c1c28}
+.focus-tab{color:#a78bfa!important;border:1px solid rgba(167,139,250,.3)!important}
+.focus-tab.active{background:rgba(167,139,250,.15)!important;color:#a78bfa!important}
+body.focus-mode{background:linear-gradient(135deg,#0a0a0f 0%,#0f0a1a 50%,#0a0f1a 100%)!important;transition:background 1s}
+body.focus-mode nav{border-bottom-color:#a78bfa44!important}
+.pomo-ring{position:relative;width:200px;height:200px;margin:0 auto}
+.pomo-ring svg{transform:rotate(-90deg)}
+.pomo-ring .ring-bg{fill:none;stroke:var(--surface2);stroke-width:8}
+.pomo-ring .ring-fg{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .5s ease,stroke .5s}
+.pomo-time{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.pomo-time .t{font-family:'Space Mono',monospace;font-size:36px;font-weight:700;color:var(--text)}
+.pomo-time .s{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.pomo-mode-btn{padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-family:'Sora',sans-serif;font-size:12px;cursor:pointer;transition:all .2s}
+.pomo-mode-btn.active{background:rgba(167,139,250,.2);border-color:#a78bfa;color:#a78bfa}
+.task-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;transition:opacity .2s}
+.task-item.done{opacity:.5}
+.task-item.done .task-text{text-decoration:line-through}
+.task-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s}
+.task-check.checked{background:#a78bfa;border-color:#a78bfa;color:#fff}
+.task-text{flex:1;font-size:13px;color:var(--text)}
+.task-tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
+.tag-work{background:rgba(0,229,160,.1);color:var(--accent)}
+.tag-study{background:rgba(0,184,212,.1);color:var(--accent2)}
+.tag-personal{background:rgba(167,139,250,.1);color:#a78bfa}
+.tag-meeting{background:rgba(255,159,64,.1);color:#ff9f40}
+.streak-flame{font-size:32px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.toast-notif{position:fixed;top:80px;right:20px;background:linear-gradient(135deg,#1a0f2e,#0f1a2e);border:1px solid #a78bfa;border-radius:12px;padding:14px 18px;z-index:9999;max-width:300px;animation:slideIn .3s ease}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes slideUp{from{transform:translateX(-50%) translateY(20px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+.progress-bar-wrap{background:var(--surface2);border-radius:20px;height:8px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#a78bfa,#00e5a0);transition:width .5s}
+</style>
+</head>
+<body>
+
+<!-- ═══ AD SLOT 1 — HEADER BANNER 728x90 ═══ -->
+<div class="ad-top">
+  <div class="ad-top-inner">
+    <span class="ad-label">📢 Publicidade</span>
+    <span class="ad-size">728 × 90</span>
+    <span class="ad-info">Slot 1 · Topo — Google AdSense / Banner Directo</span>
+  </div>
+</div>
+
+<nav>
+  <div class="logo">
+    <svg class="logo-svg" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="44" height="44" rx="10" fill="#0a0a0f" stroke="#00e5a0" stroke-width="1"/>
+      <circle cx="22" cy="22" r="14" stroke="#00e5a0" stroke-width="1.5"/>
+      <circle cx="22" cy="22" r="10" stroke="#00b8d4" stroke-width="0.6" stroke-dasharray="2.5,2"/>
+      <line x1="22" y1="22" x2="30" y2="12" stroke="#00e5a0" stroke-width="2" stroke-linecap="round"/>
+      <line x1="22" y1="22" x2="16" y2="30" stroke="#00b8d4" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="22" cy="22" r="2.5" fill="#00e5a0"/>
+      <line x1="22" y1="8" x2="22" y2="11" stroke="#00e5a0" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="36" y1="22" x2="33" y2="22" stroke="#00e5a0" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="22" y1="36" x2="22" y2="33" stroke="#00e5a0" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="22" x2="11" y2="22" stroke="#00e5a0" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <div class="logo-text">
+      <span class="t1">World</span>
+      <span class="t2">Clock</span>
+      <span class="t3">.live</span>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab active" onclick="showPage('home',this)" data-i18n="nav_clock">Hora</button>
+    <button class="tab" onclick="showPage('zones',this)" data-i18n="nav_zones">Fusos</button>
+    <button class="tab" onclick="showPage('tools',this)" data-i18n="nav_tools">Ferramentas</button>
+    <button class="tab" onclick="showPage('cal',this)" data-i18n="nav_cal">Calendário</button>
+    <button class="tab focus-tab" onclick="showPage('focus',this)">🎯 Focus Mode</button>
+  </div>
+  <div class="nav-right">
+    <select class="lang-select" onchange="setLang(this.value)" id="lang-selector">
+      <option value="auto">🌐 Auto</option>
+      <option value="pt">🇵🇹 Português</option>
+      <option value="en">🇬🇧 English</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="es">🇪🇸 Español</option>
+      <option value="ar">🇸🇦 العربية</option>
+      <option value="zh">🇨🇳 中文</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="it">🇮🇹 Italiano</option>
+      <option value="ja">🇯🇵 日本語</option>
+      <option value="ru">🇷🇺 Русский</option>
+    </select>
+    <button class="ctrl-btn" onclick="toggleTheme()" id="theme-btn">☀</button>
+  </div>
+</nav>
+
+<div class="stats-bar" id="stats-bar">
+  <span id="stats-text">120 cities · 80+ countries · 38 time zones · Live</span>
+</div>
+
+<!-- BANNER DE INSTALAÇÃO PWA -->
+<div id="install-banner" style="display:none;align-items:center;justify-content:space-between;padding:10px 24px;background:linear-gradient(90deg,#0f2a20,#0a1a2a);border-bottom:1px solid #00e5a0;flex-wrap:wrap;gap:8px">
+  <div style="display:flex;align-items:center;gap:10px">
+    <span style="font-size:20px">📲</span>
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#00e5a0">Instalar WorldClock como App</div>
+      <div style="font-size:11px;color:#8888aa">Acesso rápido no ecrã inicial, funciona offline</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button id="install-btn" onclick="if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('install-banner').style.display='none';});}" style="background:#00e5a0;color:#000;border:none;border-radius:8px;padding:8px 16px;font-family:Sora,sans-serif;font-size:13px;font-weight:600;cursor:pointer">⬇ Instalar</button>
+    <button onclick="document.getElementById('install-banner').style.display='none'" style="background:transparent;color:#8888aa;border:1px solid #2a2a3a;border-radius:8px;padding:8px 12px;font-family:Sora,sans-serif;font-size:12px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<!-- PAGE: HOME -->
+<div id="page-home" class="page active">
+<div class="layout">
+  <div>
+    <div class="main-clock-card">
+      <div class="location-label" id="user-location">...</div>
+      <div class="big-time" id="main-time">00<span>:</span>00<span>:</span>00</div>
+      <div class="date-line" id="main-date">—</div>
+      <div class="tz-badge" id="tz-label">UTC+0</div>
+    </div>
+    <div class="section-title" id="featured-label">Featured Cities</div>
+    <div class="world-grid" id="world-grid"></div>
+  </div>
+  <div>
+    <!-- ═══ AD SLOT 2 — SIDEBAR 300x250 ═══ -->
+    <div class="ad-sidebar">
+      <div class="ad-sidebar-inner">
+        <div class="ad-icon">📣</div>
+        <span class="ad-label">Publicidade</span>
+        <span class="ad-size">300 × 250</span>
+        <span class="ad-info">Slot 2 · Sidebar<br>Google AdSense<br>ou Banner Directo</span>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:16px">
+      <div class="panel-title">⚡ <span data-i18n="stopwatch">Cronômetro</span></div>
+      <div class="chrono-display" id="chrono-display">00:00:00</div>
+      <div class="chrono-btns">
+        <button class="btn primary" id="chrono-btn" onclick="chronoToggle()">▶</button>
+        <button class="btn" onclick="chronoReset()" data-i18n="reset">↺ Reset</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">⏳ <span data-i18n="countdown">Contagem Regressiva</span></div>
+      <div class="cd-inputs">
+        <input type="number" id="cd-h" value="0" min="0" max="99">
+        <span>:</span>
+        <input type="number" id="cd-m" value="5" min="0" max="59">
+        <span>:</span>
+        <input type="number" id="cd-s" value="0" min="0" max="59">
+      </div>
+      <div class="chrono-display" id="cd-display" style="color:var(--accent2)">00:05:00</div>
+
+      <!-- Tom activo — compacto -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:10px 0 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:16px">🚨</span>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text)" id="active-tone-label">Urgente — Alerta forte</div>
+            <div style="font-size:10px;color:var(--muted)">Tom do alarme activo</div>
+          </div>
+        </div>
+        <button onclick="toggleTonePanel()" style="background:transparent;border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--muted);font-size:11px;cursor:pointer;font-family:Sora,sans-serif" id="change-tone-btn">⚙ Mudar</button>
+      </div>
+
+      <!-- Painel de selecção — oculto por defeito -->
+      <div id="tone-panel" style="display:none;margin-bottom:12px">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
+          <select id="alarm-tone" onchange="updateToneLabel()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:Sora,sans-serif;font-size:12px">
+            <option value="digital">⏰ Digital — Clássico despertador</option>
+            <option value="gentle">🌅 Suave — Acordar gentil</option>
+            <option value="urgent" selected>🚨 Urgente — Alerta forte</option>
+            <option value="bell">🔔 Sino — Tom de sino</option>
+            <option value="beep">📟 Beep — Tom simples</option>
+          </select>
+          <button class="btn" onclick="previewTone()" style="font-size:11px;padding:8px 10px">▶ Testar</button>
+        </div>
+      </div>
+
+      <div class="chrono-btns">
+        <button class="btn primary" id="cd-btn" onclick="cdToggle()">▶</button>
+        <button class="btn danger" onclick="cdReset()" data-i18n="reset">✕ Reset</button>
+        <button class="btn" id="stop-alarm-btn" onclick="stopAlarm()" style="display:none;border-color:#ff4466;color:#ff4466">🔕 Parar Alarme</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE: ZONES -->
+<div id="page-zones" class="page">
+<div style="max-width:1100px;margin:0 auto;padding:20px 24px">
+  <div class="search-bar">
+    <input type="text" id="zone-search" data-i18n-placeholder="search_placeholder" placeholder="Search city or country..." oninput="filterZones()">
+  </div>
+  <div class="section-title"><span data-i18n="africa">Africa</span> <span class="african-tag">AF</span></div>
+  <div class="world-grid" id="africa-grid" style="grid-template-columns:repeat(5,1fr)"></div>
+  <div class="section-title" style="margin-top:24px"><span data-i18n="europe">Europe</span> <span class="region-tag">EU</span></div>
+  <div class="world-grid" id="europe-grid" style="grid-template-columns:repeat(5,1fr)"></div>
+  <div class="section-title" style="margin-top:24px"><span data-i18n="americas">Americas</span> <span class="region-tag">AM</span></div>
+  <div class="world-grid" id="americas-grid" style="grid-template-columns:repeat(5,1fr)"></div>
+  <div class="section-title" style="margin-top:24px"><span data-i18n="asia">Asia & Oceania</span> <span class="region-tag">AS</span></div>
+  <div class="world-grid" id="asia-grid" style="grid-template-columns:repeat(5,1fr)"></div>
+  <div class="section-title" style="margin-top:24px"><span data-i18n="mideast">Middle East & Central Asia</span> <span class="region-tag">ME</span></div>
+  <div class="world-grid" id="me-grid" style="grid-template-columns:repeat(5,1fr)"></div>
+</div>
+</div>
+
+<!-- PAGE: TOOLS -->
+<div id="page-tools" class="page">
+<div style="max-width:600px;margin:0 auto;padding:20px 24px">
+  <div class="panel">
+    <div class="panel-title">🔄 <span data-i18n="compare_title">Compare Time Zones</span></div>
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin-bottom:16px">
+      <select id="cmp-a" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:Sora,sans-serif;font-size:13px"></select>
+      <span style="color:var(--muted);font-size:20px">↔</span>
+      <select id="cmp-b" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:Sora,sans-serif;font-size:13px"></select>
+    </div>
+    <div id="cmp-result" style="background:var(--surface2);border-radius:10px;padding:16px;text-align:center;font-size:14px;color:var(--text)">—</div>
+  </div>
+  <div class="panel">
+    <div class="panel-title">🕐 <span data-i18n="convert_title">Time Converter</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px" data-i18n="from">From</div>
+        <input type="time" id="conv-time" value="12:00" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:Space Mono,monospace;font-size:16px">
+        <select id="conv-from" style="width:100%;margin-top:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:Sora,sans-serif;font-size:12px"></select>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px" data-i18n="to">To</div>
+        <div id="conv-result" style="font-family:Space Mono,monospace;font-size:32px;font-weight:700;color:var(--accent);padding:4px 0">—</div>
+        <select id="conv-to" style="width:100%;margin-top:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:Sora,sans-serif;font-size:12px"></select>
+      </div>
+    </div>
+    <button class="btn primary" style="width:100%;margin-top:14px" onclick="convertTime()" data-i18n="convert_btn">Convert</button>
+  </div>
+</div>
+</div>
+
+<!-- PAGE: CAL -->
+<div id="page-cal" class="page">
+<div style="max-width:400px;margin:0 auto;padding:20px 24px">
+  <div class="panel">
+    <div class="cal-header">
+      <button class="cal-nav" onclick="calPrev()">‹</button>
+      <div class="cal-month-lbl" id="cal-month-label">—</div>
+      <button class="cal-nav" onclick="calNext()">›</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div style="margin-top:16px;font-size:12px;color:var(--muted)">
+      <span data-i18n="week_label">Week</span>: <span id="week-num" style="color:var(--accent);font-weight:600"></span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE: FOCUS MODE -->
+<div id="page-focus" class="page">
+<div style="max-width:1000px;margin:0 auto;padding:20px 24px">
+
+  <!-- Toast de boas-vindas -->
+  <div id="focus-toast" style="background:linear-gradient(135deg,#1a0f2e,#0f1a2e);border:1px solid #a78bfa;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
+    <span style="font-size:24px">🎯</span>
+    <div>
+      <div style="font-size:14px;font-weight:600;color:#a78bfa" id="focus-toast-title">Novidade — Focus Mode</div>
+      <div style="font-size:12px;color:var(--muted)" id="focus-toast-desc">Gerencie o tempo global e o foco pessoal num só lugar.</div>
+    </div>
+    <button onclick="document.getElementById('focus-toast').style.display='none'" style="margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px">✕</button>
+  </div>
+
+  <!-- Streak + Quote -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+    <div class="panel" style="display:flex;align-items:center;gap:16px">
+      <div class="streak-flame">🔥</div>
+      <div>
+        <div style="font-size:24px;font-weight:700;color:#a78bfa" id="streak-count">0</div>
+        <div style="font-size:11px;color:var(--muted);letter-spacing:1px" id="streak-label">STREAK</div>
+        <div style="font-size:11px;color:var(--muted)" id="sessions-today">0 sessões hoje</div>
+      </div>
+    </div>
+    <div class="panel" style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:24px">💬</span>
+      <div style="font-size:13px;color:var(--text);font-style:italic;line-height:1.5" id="daily-quote">...</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+
+    <!-- COLUNA ESQUERDA: Pomodoro -->
+    <div>
+      <div class="panel">
+        <!-- Modos -->
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+          <button class="pomo-mode-btn active" onclick="setPomoMode('work',25,this)" id="mode-work">💼 <span class="pm-work">Work</span></button>
+          <button class="pomo-mode-btn" onclick="setPomoMode('study',25,this)" id="mode-study">📚 <span class="pm-study">Study</span></button>
+          <button class="pomo-mode-btn" onclick="setPomoMode('meeting',50,this)" id="mode-meeting">🌍 <span class="pm-meeting">Meeting</span></button>
+          <button class="pomo-mode-btn" onclick="setPomoMode('deep',90,this)" id="mode-deep">🧠 <span class="pm-deep">Deep Work</span></button>
+        </div>
+
+        <!-- Anel circular -->
+        <div class="pomo-ring">
+          <svg width="200" height="200" viewBox="0 0 200 200">
+            <circle class="ring-bg" cx="100" cy="100" r="88"/>
+            <circle class="ring-fg" id="pomo-ring-fg" cx="100" cy="100" r="88" stroke="#a78bfa" stroke-dasharray="553" stroke-dashoffset="0"/>
+          </svg>
+          <div class="pomo-time">
+            <div class="t" id="pomo-display">25:00</div>
+            <div class="s" id="pomo-state-label">FOCUS</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px"><span id="cycle-label">Cycle</span> <span id="pomo-cycle">1</span>/4</div>
+          </div>
+        </div>
+
+        <!-- Cidade local -->
+        <div id="focus-city-line" style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px">
+          ⏱ <span id="focus-city-text">O seu tempo de foco</span>
+        </div>
+
+        <!-- Zen Mode + Controlos -->
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap">
+          <button class="btn primary" id="pomo-btn" onclick="pomoToggle()" style="background:#a78bfa;border-color:#a78bfa;min-width:100px">▶ <span id="pomo-btn-label">Start</span></button>
+          <button class="btn" onclick="pomoReset()" id="pomo-reset-btn">↺ Reset</button>
+          <button class="btn" onclick="pomoSkip()" id="pomo-skip-btn">⏭ Skip</button>
+          <button class="btn" onclick="toggleZenMode()" id="zen-btn" style="border-color:#a78bfa44;color:#a78bfa;font-size:11px">🧘 Zen</button>
+        </div>
+
+        <!-- Ciclos visuais -->
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:14px" id="pomo-dots">
+          <div style="width:12px;height:12px;border-radius:50%;background:var(--surface2);border:2px solid var(--border)" id="dot-0"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:var(--surface2);border:2px solid var(--border)" id="dot-1"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:var(--surface2);border:2px solid var(--border)" id="dot-2"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:var(--surface2);border:2px solid var(--border)" id="dot-3"></div>
+        </div>
+
+        <!-- Meta diária -->
+        <div style="margin-top:16px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px">
+            <span id="daily-goal-label">Daily goal</span>
+            <span id="daily-progress-label">0 / 8 sessions</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="daily-progress-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estatísticas -->
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-title">📊 <span id="stats-title">Statistics</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center">
+          <div style="background:var(--surface2);border-radius:10px;padding:12px">
+            <div style="font-size:22px;font-weight:700;color:#a78bfa" id="stat-today">0</div>
+            <div style="font-size:10px;color:var(--muted)" id="stat-today-label">Today</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:10px;padding:12px">
+            <div style="font-size:22px;font-weight:700;color:var(--accent)" id="stat-week">0</div>
+            <div style="font-size:10px;color:var(--muted)" id="stat-week-label">This week</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:10px;padding:12px">
+            <div style="font-size:22px;font-weight:700;color:var(--accent2)" id="stat-total">0</div>
+            <div style="font-size:10px;color:var(--muted)" id="stat-total-label">Total</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA: Tarefas + Notas -->
+    <div>
+      <!-- Bloco de notas da sessão -->
+      <div class="panel">
+        <div class="panel-title">📝 <span id="session-title">Session</span></div>
+        <input type="text" id="session-goal" data-i18n-placeholder="session_goal_ph" placeholder="O que pretendes concluir nesta sessão?" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:Sora,sans-serif;font-size:13px;margin-bottom:8px">
+        <textarea id="session-notes" data-i18n-placeholder="session_notes_ph" placeholder="Notas rápidas, ideias, distrações para rever depois..." rows="4" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:Sora,sans-serif;font-size:12px;resize:none"></textarea>
+      </div>
+
+      <!-- Lista de tarefas -->
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-title">✅ <span id="tasks-title">Tasks</span></div>
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <input type="text" id="task-input" data-i18n-placeholder="task_ph" placeholder="Nova tarefa..." onkeydown="if(event.key==='Enter')addTask()" style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:Sora,sans-serif;font-size:13px">
+          <select id="task-tag-select" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:Sora,sans-serif;font-size:12px">
+            <option value="work">💼 <span class="tl-work">Trabalho</span></option>
+            <option value="study">📚 <span class="tl-study">Estudo</span></option>
+            <option value="personal">👤 <span class="tl-personal">Pessoal</span></option>
+            <option value="meeting">🌍 <span class="tl-meeting">Reunião</span></option>
+          </select>
+          <button class="btn primary" onclick="addTask()" style="background:#a78bfa;border-color:#a78bfa;padding:8px 14px">+</button>
+        </div>
+        <div id="task-list"></div>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted)" id="task-summary">0 tasks · 0 done</div>
+      </div>
+
+      <!-- Fusos activos durante sessão -->
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-title">🌍 <span id="working-title">Countries Working Now</span></div>
+        <div id="working-hours-list" style="font-size:12px;color:var(--text)"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ZEN MODE OVERLAY -->
+<div id="zen-overlay" style="display:none;position:fixed;inset:0;background:rgba(5,5,10,.92);z-index:500;flex-direction:column;align-items:center;justify-content:center;gap:20px">
+  <div style="font-size:13px;color:#a78bfa;letter-spacing:3px;text-transform:uppercase" id="zen-city-text">O seu tempo de foco</div>
+  <div class="pomo-ring" style="width:260px;height:260px">
+    <svg width="260" height="260" viewBox="0 0 260 260">
+      <circle cx="130" cy="130" r="115" fill="none" stroke="#1a1a2e" stroke-width="10"/>
+      <circle id="zen-ring" cx="130" cy="130" r="115" fill="none" stroke="#a78bfa" stroke-width="10" stroke-linecap="round" stroke-dasharray="723" stroke-dashoffset="0" style="transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .5s"/>
+    </svg>
+    <div class="pomo-time">
+      <div style="font-family:'Space Mono',monospace;font-size:52px;font-weight:700;color:#fff" id="zen-display">25:00</div>
+      <div style="font-size:12px;color:#a78bfa;letter-spacing:2px" id="zen-state">FOCO</div>
+    </div>
+  </div>
+  <button onclick="toggleZenMode()" style="background:transparent;border:1px solid #a78bfa44;border-radius:20px;padding:8px 24px;color:#a78bfa;font-family:Sora,sans-serif;font-size:13px;cursor:pointer" id="zen-exit-btn">✕ Sair do Zen Mode</button>
+</div>
+
+<!-- TASK COMPLETE TOAST -->
+<div id="task-toast" style="display:none;position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#0f2a1a,#0a1a0f);border:1px solid #00e5a0;border-radius:12px;padding:12px 20px;z-index:9999;display:none;align-items:center;gap:10px;min-width:280px">
+  <span style="font-size:20px">✅</span>
+  <div>
+    <div style="font-size:13px;font-weight:600;color:#00e5a0" id="task-toast-title">Tarefa concluída!</div>
+    <div style="font-size:11px;color:var(--muted)" id="task-toast-sub">Continua assim 💪</div>
+  </div>
+</div>
+
+<!-- ═══ AD SLOT 3 — FOOTER BANNER 728x90 ═══ -->
+<div class="ad-footer-wrap">
+  <div class="ad-footer-inner">
+    <span class="ad-label">📢 Publicidade</span>
+    <span class="ad-size">728 × 90</span>
+    <span class="ad-info">Slot 3 · Rodapé — Google AdSense / Banner Directo</span>
+  </div>
+</div>
+<footer>
+  <div style="padding:12px 20px">© 2026 WorldClock.live · <a href="#" onclick="openModal('about')" data-i18n="about">About</a> · <a href="#" onclick="openModal('contact')" data-i18n="contact">Contact</a> · <a href="#" onclick="openModal('privacy')" data-i18n="privacy">Privacy</a></div>
+</footer>
+
+<!-- MODAL ABOUT -->
+<div id="modal-about" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9000;align-items:center;justify-content:center">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:520px;width:90%;position:relative;max-height:80vh;overflow-y:auto">
+    <button onclick="closeModal('about')" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer">✕</button>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+      <svg width="40" height="40" viewBox="0 0 44 44" fill="none"><rect width="44" height="44" rx="10" fill="#0a0a0f" stroke="#00e5a0" stroke-width="1"/><circle cx="22" cy="22" r="14" stroke="#00e5a0" stroke-width="1.5"/><line x1="22" y1="22" x2="30" y2="12" stroke="#00e5a0" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="22" x2="16" y2="30" stroke="#00b8d4" stroke-width="1.5" stroke-linecap="round"/><circle cx="22" cy="22" r="2.5" fill="#00e5a0"/></svg>
+      <div><div style="font-family:Space Mono,monospace;font-size:18px;color:var(--accent)">WorldClock<span style="color:var(--text)">.live</span></div><div style="font-size:11px;color:var(--muted)">Global Time & Productivity Hub</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:12px">WorldClock.live is a free real-time world clock covering 120+ cities across 80+ countries and 38 time zones. Built and maintained independently from Beira, Mozambique.</p>
+    <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:12px">Our mission is to make time accessible to everyone — from professionals coordinating across time zones to students managing their focus with the built-in Pomodoro system.</p>
+    <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:20px">The platform supports 10 languages with automatic detection, works as an installable app (PWA), and is designed with a strong focus on African cities and communities.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px"><div style="font-size:22px;font-weight:700;color:var(--accent)">120+</div><div style="font-size:11px;color:var(--muted)">Cities</div></div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px"><div style="font-size:22px;font-weight:700;color:var(--accent2)">10</div><div style="font-size:11px;color:var(--muted)">Languages</div></div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px"><div style="font-size:22px;font-weight:700;color:#a78bfa">38</div><div style="font-size:11px;color:var(--muted)">Time Zones</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONTACT -->
+<div id="modal-contact" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9000;align-items:center;justify-content:center">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:480px;width:90%;position:relative">
+    <button onclick="closeModal('contact')" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer">✕</button>
+    <h2 style="font-size:18px;color:var(--text);margin-bottom:8px">Contact Us</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Have a question, suggestion or want to advertise on WorldClock.live? Get in touch.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input id="contact-name" type="text" placeholder="Your name" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:Sora,sans-serif;font-size:13px;width:100%">
+      <input id="contact-email" type="email" placeholder="Your email" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:Sora,sans-serif;font-size:13px;width:100%">
+      <select id="contact-subject" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:Sora,sans-serif;font-size:13px">
+        <option>General question</option>
+        <option>Advertising / Sponsorship</option>
+        <option>Bug report</option>
+        <option>Feature suggestion</option>
+        <option>Partnership</option>
+      </select>
+      <textarea id="contact-msg" rows="4" placeholder="Your message..." style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:Sora,sans-serif;font-size:13px;resize:none"></textarea>
+      <button onclick="submitContact()" style="background:var(--accent);color:#000;border:none;border-radius:8px;padding:12px;font-family:Sora,sans-serif;font-size:14px;font-weight:600;cursor:pointer">Send Message</button>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center">Or email us directly: <span style="color:var(--accent2)">contact@worldclock.live</span></p>
+  </div>
+</div>
+
+<!-- MODAL PRIVACY -->
+<div id="modal-privacy" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9000;align-items:center;justify-content:center">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:520px;width:90%;position:relative;max-height:80vh;overflow-y:auto">
+    <button onclick="closeModal('privacy')" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer">✕</button>
+    <h2 style="font-size:18px;color:var(--text);margin-bottom:16px">Privacy Policy</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Last updated: May 2026</p>
+    <div style="font-size:13px;color:var(--text);line-height:1.7">
+      <p style="margin-bottom:12px"><strong>Data Collection:</strong> WorldClock.live does not collect personal data. We do not require registration or login.</p>
+      <p style="margin-bottom:12px"><strong>Local Storage:</strong> We use your browser's localStorage to save Focus Mode preferences and task lists. This data stays on your device and is never transmitted.</p>
+      <p style="margin-bottom:12px"><strong>Advertising:</strong> This site uses Google AdSense to display ads. Google may use cookies to serve personalised ads. You can opt out via <a href="https://adssettings.google.com" target="_blank" style="color:var(--accent2)">Google Ad Settings</a>.</p>
+      <p style="margin-bottom:12px"><strong>Cookies:</strong> Cookies may be set by Google AdSense for advertising purposes. We do not set any first-party cookies.</p>
+      <p style="margin-bottom:12px"><strong>Third-Party Services:</strong> We use Google Fonts for typography. No other third-party services collect data through this site.</p>
+      <p><strong>Contact:</strong> For privacy concerns, contact us at contact@worldclock.live</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── TRANSLATIONS ────────────────────────────────────────────────────────────
+const TRANSLATIONS = {
+  pt: {
+    nav_clock:'Hora', nav_zones:'Fusos', nav_tools:'Ferramentas', nav_cal:'Calendário',
+    stopwatch:'Cronômetro', countdown:'Contagem Regressiva', reset:'↺ Reset',
+    compare_title:'Comparar Fusos Horários', convert_title:'Conversor de Hora',
+    from:'Origem', to:'Destino', convert_btn:'Converter',
+    africa:'África', europe:'Europa', americas:'Américas', asia:'Ásia & Oceânia', mideast:'Médio Oriente & Ásia Central',
+    featured:'Cidades em Destaque', search_placeholder:'Buscar cidade ou país...',
+    week_label:'Semana actual', about:'Sobre', contact:'Contacto', privacy:'Privacidade',
+    local_time:'Sua hora local', detecting:'Detectando localização...',
+    start:'▶ Iniciar', pause:'⏸ Pausar', resume:'▶ Continuar',
+    stats:'120 cidades · 80+ países · 38 fusos · Tempo real',
+    alert_done:'Contagem regressiva concluída!',
+    months:['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+    dows:['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+    locale:'pt-BR',
+    focus_streak:'DIAS DE STREAK', focus_sessions_today:'sessões hoje',
+    focus_cycle:'Ciclo', focus_goal:'Meta diária', focus_stats:'Estatísticas',
+    focus_today:'Hoje', focus_week:'Esta semana', focus_total:'Total',
+    focus_session_title:'Sessão Actual', focus_tasks_title:'Tarefas do Dia',
+    focus_working:'Países em Horário Laboral Agora',
+    focus_city_prefix:'O seu tempo de foco em',
+    focus_mode_work:'Trabalho', focus_mode_study:'Estudo',
+    focus_mode_meeting:'Reunião', focus_mode_deep:'Deep Work',
+    focus_start:'▶ Iniciar', focus_pause:'⏸ Pausar', focus_resume:'▶ Continuar',
+    focus_reset:'↺ Reset', focus_skip:'⏭ Skip', focus_zen:'🧘 Zen',
+    task_ph:'Nova tarefa...', session_goal_ph:'O que pretendes concluir nesta sessão?',
+    session_notes_ph:'Notas rápidas, ideias, distrações para rever depois...',
+    task_done_msg:'Tarefa concluída! 🎉', task_all_done:'Todas as tarefas concluídas! 🏆',
+    sessions_label:'sessões'
+  },
+  en: {
+    nav_clock:'Clock', nav_zones:'Time Zones', nav_tools:'Tools', nav_cal:'Calendar',
+    stopwatch:'Stopwatch', countdown:'Countdown', reset:'↺ Reset',
+    compare_title:'Compare Time Zones', convert_title:'Time Converter',
+    from:'From', to:'To', convert_btn:'Convert',
+    africa:'Africa', europe:'Europe', americas:'Americas', asia:'Asia & Oceania', mideast:'Middle East & Central Asia',
+    featured:'Featured Cities', search_placeholder:'Search city or country...',
+    week_label:'Current week', about:'About', contact:'Contact', privacy:'Privacy',
+    local_time:'Your local time', detecting:'Detecting location...',
+    start:'▶ Start', pause:'⏸ Pause', resume:'▶ Resume',
+    stats:'120 cities · 80+ countries · 38 time zones · Live',
+    alert_done:'Countdown finished!',
+    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    dows:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    locale:'en-US',
+    focus_streak:'DAY STREAK', focus_sessions_today:'sessions today',
+    focus_cycle:'Cycle', focus_goal:'Daily goal', focus_stats:'Statistics',
+    focus_today:'Today', focus_week:'This week', focus_total:'Total',
+    focus_session_title:'Current Session', focus_tasks_title:'Today\'s Tasks',
+    focus_working:'Countries Currently Working',
+    focus_city_prefix:'Your focus time in',
+    focus_mode_work:'Work', focus_mode_study:'Study',
+    focus_mode_meeting:'Meeting', focus_mode_deep:'Deep Work',
+    focus_start:'▶ Start', focus_pause:'⏸ Pause', focus_resume:'▶ Resume',
+    focus_reset:'↺ Reset', focus_skip:'⏭ Skip', focus_zen:'🧘 Zen',
+    task_ph:'New task...', session_goal_ph:'What do you want to achieve this session?',
+    session_notes_ph:'Quick notes, ideas, distractions to review later...',
+    task_done_msg:'Task completed! 🎉', task_all_done:'All tasks done! 🏆',
+    sessions_label:'sessions'
+  },
+  fr: {
+    nav_clock:'Heure', nav_zones:'Fuseaux', nav_tools:'Outils', nav_cal:'Calendrier',
+    stopwatch:'Chronomètre', countdown:'Compte à rebours', reset:'↺ Reset',
+    compare_title:'Comparer les fuseaux', convert_title:'Convertisseur d\'heure',
+    from:'De', to:'À', convert_btn:'Convertir',
+    africa:'Afrique', europe:'Europe', americas:'Amériques', asia:'Asie & Océanie', mideast:'Moyen-Orient & Asie centrale',
+    featured:'Villes en vedette', search_placeholder:'Rechercher une ville ou un pays...',
+    week_label:'Semaine en cours', about:'À propos', contact:'Contact', privacy:'Confidentialité',
+    local_time:'Votre heure locale', detecting:'Détection de la position...',
+    start:'▶ Démarrer', pause:'⏸ Pause', resume:'▶ Reprendre',
+    stats:'120 villes · 80+ pays · 38 fuseaux · En direct',
+    alert_done:'Compte à rebours terminé !',
+    months:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+    dows:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+    locale:'fr-FR',
+    focus_streak:'JOURS DE SÉRIE', focus_sessions_today:'sessions aujourd\'hui',
+    focus_cycle:'Cycle', focus_goal:'Objectif quotidien', focus_stats:'Statistiques',
+    focus_today:'Aujourd\'hui', focus_week:'Cette semaine', focus_total:'Total',
+    focus_session_title:'Session Actuelle', focus_tasks_title:'Tâches du Jour',
+    focus_working:'Pays en Horaire de Travail',
+    focus_city_prefix:'Votre temps de focus à',
+    focus_mode_work:'Travail', focus_mode_study:'Étude',
+    focus_mode_meeting:'Réunion', focus_mode_deep:'Travail Profond',
+    focus_start:'▶ Démarrer', focus_pause:'⏸ Pause', focus_resume:'▶ Reprendre',
+    focus_reset:'↺ Reset', focus_skip:'⏭ Passer', focus_zen:'🧘 Zen',
+    task_ph:'Nouvelle tâche...', session_goal_ph:'Que voulez-vous accomplir cette session?',
+    session_notes_ph:'Notes rapides, idées, distractions à revoir...',
+    task_done_msg:'Tâche terminée! 🎉', task_all_done:'Toutes les tâches terminées! 🏆',
+    sessions_label:'sessions'
+  },
+  es: {
+    nav_clock:'Hora', nav_zones:'Zonas', nav_tools:'Herramientas', nav_cal:'Calendario',
+    stopwatch:'Cronómetro', countdown:'Cuenta regresiva', reset:'↺ Reset',
+    compare_title:'Comparar zonas horarias', convert_title:'Convertidor de hora',
+    from:'Desde', to:'Hacia', convert_btn:'Convertir',
+    africa:'África', europe:'Europa', americas:'Américas', asia:'Asia & Oceanía', mideast:'Oriente Medio & Asia Central',
+    featured:'Ciudades destacadas', search_placeholder:'Buscar ciudad o país...',
+    week_label:'Semana actual', about:'Acerca de', contact:'Contacto', privacy:'Privacidad',
+    local_time:'Tu hora local', detecting:'Detectando ubicación...',
+    start:'▶ Iniciar', pause:'⏸ Pausar', resume:'▶ Continuar',
+    stats:'120 ciudades · 80+ países · 38 zonas · En vivo',
+    alert_done:'¡Cuenta regresiva terminada!',
+    months:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+    dows:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+    locale:'es-ES',
+    focus_streak:'DÍAS DE RACHA', focus_sessions_today:'sesiones hoy',
+    focus_cycle:'Ciclo', focus_goal:'Meta diaria', focus_stats:'Estadísticas',
+    focus_today:'Hoy', focus_week:'Esta semana', focus_total:'Total',
+    focus_session_title:'Sesión Actual', focus_tasks_title:'Tareas del Día',
+    focus_working:'Países en Horario Laboral',
+    focus_city_prefix:'Tu tiempo de enfoque en',
+    focus_mode_work:'Trabajo', focus_mode_study:'Estudio',
+    focus_mode_meeting:'Reunión', focus_mode_deep:'Trabajo Profundo',
+    focus_start:'▶ Iniciar', focus_pause:'⏸ Pausar', focus_resume:'▶ Continuar',
+    focus_reset:'↺ Reset', focus_skip:'⏭ Saltar', focus_zen:'🧘 Zen',
+    task_ph:'Nueva tarea...', session_goal_ph:'¿Qué quieres lograr en esta sesión?',
+    session_notes_ph:'Notas rápidas, ideas, distracciones para revisar...',
+    task_done_msg:'¡Tarea completada! 🎉', task_all_done:'¡Todas las tareas completadas! 🏆',
+    sessions_label:'sesiones'
+  },
+  ar: {
+    nav_clock:'الساعة', nav_zones:'المناطق', nav_tools:'أدوات', nav_cal:'التقويم',
+    stopwatch:'ساعة إيقاف', countdown:'عد تنازلي', reset:'↺ إعادة',
+    compare_title:'مقارنة المناطق الزمنية', convert_title:'محوّل الوقت',
+    from:'من', to:'إلى', convert_btn:'تحويل',
+    africa:'أفريقيا', europe:'أوروبا', americas:'الأمريكتان', asia:'آسيا وأوقيانوسيا', mideast:'الشرق الأوسط وآسيا الوسطى',
+    featured:'مدن مميزة', search_placeholder:'ابحث عن مدينة أو دولة...',
+    week_label:'الأسبوع الحالي', about:'حول', contact:'اتصل', privacy:'الخصوصية',
+    local_time:'توقيتك المحلي', detecting:'جارٍ تحديد الموقع...',
+    start:'▶ ابدأ', pause:'⏸ توقف', resume:'▶ استمر',
+    stats:'١٢٠ مدينة · ٨٠+ دولة · ٣٨ منطقة زمنية · مباشر',
+    alert_done:'انتهى العد التنازلي!',
+    months:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
+    dows:['أحد','إثن','ثلا','أرب','خمس','جمع','سبت'],
+    locale:'ar-SA',
+    focus_streak:'أيام متتالية', focus_sessions_today:'جلسات اليوم',
+    focus_cycle:'دورة', focus_goal:'هدف يومي', focus_stats:'إحصائيات',
+    focus_today:'اليوم', focus_week:'هذا الأسبوع', focus_total:'الإجمالي',
+    focus_session_title:'الجلسة الحالية', focus_tasks_title:'مهام اليوم',
+    focus_working:'الدول في وقت العمل الآن',
+    focus_city_prefix:'وقت تركيزك في',
+    focus_mode_work:'عمل', focus_mode_study:'دراسة',
+    focus_mode_meeting:'اجتماع', focus_mode_deep:'عمل عميق',
+    focus_start:'▶ ابدأ', focus_pause:'⏸ توقف', focus_resume:'▶ استمر',
+    focus_reset:'↺ إعادة', focus_skip:'⏭ تخطي', focus_zen:'🧘 زن',
+    task_ph:'مهمة جديدة...', session_goal_ph:'ماذا تريد أن تنجز في هذه الجلسة؟',
+    session_notes_ph:'ملاحظات سريعة، أفكار، مشتتات للمراجعة لاحقاً...',
+    task_done_msg:'تمت المهمة! 🎉', task_all_done:'جميع المهام مكتملة! 🏆',
+    sessions_label:'جلسات'
+  },
+  zh: {
+    nav_clock:'时钟', nav_zones:'时区', nav_tools:'工具', nav_cal:'日历',
+    stopwatch:'秒表', countdown:'倒计时', reset:'↺ 重置',
+    compare_title:'时区对比', convert_title:'时间转换器',
+    from:'从', to:'到', convert_btn:'转换',
+    africa:'非洲', europe:'欧洲', americas:'美洲', asia:'亚洲和大洋洲', mideast:'中东和中亚',
+    featured:'精选城市', search_placeholder:'搜索城市或国家...',
+    week_label:'当前周', about:'关于', contact:'联系', privacy:'隐私',
+    local_time:'您的本地时间', detecting:'正在检测位置...',
+    start:'▶ 开始', pause:'⏸ 暂停', resume:'▶ 继续',
+    stats:'120个城市 · 80+个国家 · 38个时区 · 实时',
+    alert_done:'倒计时结束！',
+    months:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+    dows:['日','一','二','三','四','五','六'],
+    locale:'zh-CN',
+    focus_streak:'连续天数', focus_sessions_today:'今日专注',
+    focus_cycle:'周期', focus_goal:'每日目标', focus_stats:'统计',
+    focus_today:'今天', focus_week:'本周', focus_total:'总计',
+    focus_session_title:'当前会话', focus_tasks_title:'今日任务',
+    focus_working:'当前工作时间的国家',
+    focus_city_prefix:'您在以下城市的专注时间',
+    focus_mode_work:'工作', focus_mode_study:'学习',
+    focus_mode_meeting:'会议', focus_mode_deep:'深度工作',
+    focus_start:'▶ 开始', focus_pause:'⏸ 暂停', focus_resume:'▶ 继续',
+    focus_reset:'↺ 重置', focus_skip:'⏭ 跳过', focus_zen:'🧘 禅',
+    task_ph:'新任务...', session_goal_ph:'这次会话你想完成什么？',
+    session_notes_ph:'快速笔记、想法、稍后查看的干扰...',
+    task_done_msg:'任务完成！🎉', task_all_done:'所有任务完成！🏆',
+    sessions_label:'次'
+  },
+  de: {
+    nav_clock:'Uhr', nav_zones:'Zeitzonen', nav_tools:'Werkzeuge', nav_cal:'Kalender',
+    stopwatch:'Stoppuhr', countdown:'Countdown', reset:'↺ Reset',
+    compare_title:'Zeitzonen vergleichen', convert_title:'Zeitumrechner',
+    from:'Von', to:'Nach', convert_btn:'Umrechnen',
+    africa:'Afrika', europe:'Europa', americas:'Amerika', asia:'Asien & Ozeanien', mideast:'Naher Osten & Zentralasien',
+    featured:'Ausgewählte Städte', search_placeholder:'Stadt oder Land suchen...',
+    week_label:'Aktuelle Woche', about:'Über', contact:'Kontakt', privacy:'Datenschutz',
+    local_time:'Ihre Ortszeit', detecting:'Standort wird ermittelt...',
+    start:'▶ Start', pause:'⏸ Pause', resume:'▶ Weiter',
+    stats:'120 Städte · 80+ Länder · 38 Zeitzonen · Live',
+    alert_done:'Countdown beendet!',
+    months:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+    dows:['So','Mo','Di','Mi','Do','Fr','Sa'],
+    locale:'de-DE',
+    focus_streak:'TAGE IN FOLGE', focus_sessions_today:'Sitzungen heute',
+    focus_cycle:'Zyklus', focus_goal:'Tagesziel', focus_stats:'Statistiken',
+    focus_today:'Heute', focus_week:'Diese Woche', focus_total:'Gesamt',
+    focus_session_title:'Aktuelle Sitzung', focus_tasks_title:'Aufgaben des Tages',
+    focus_working:'Länder mit Arbeitszeit',
+    focus_city_prefix:'Ihre Fokuszeit in',
+    focus_mode_work:'Arbeit', focus_mode_study:'Lernen',
+    focus_mode_meeting:'Meeting', focus_mode_deep:'Tiefe Arbeit',
+    focus_start:'▶ Start', focus_pause:'⏸ Pause', focus_resume:'▶ Weiter',
+    focus_reset:'↺ Reset', focus_skip:'⏭ Überspringen', focus_zen:'🧘 Zen',
+    task_ph:'Neue Aufgabe...', session_goal_ph:'Was möchten Sie in dieser Sitzung erreichen?',
+    session_notes_ph:'Schnelle Notizen, Ideen, Ablenkungen zur späteren Überprüfung...',
+    task_done_msg:'Aufgabe erledigt! 🎉', task_all_done:'Alle Aufgaben erledigt! 🏆',
+    sessions_label:'Sitzungen'
+  },
+  it: {
+    nav_clock:'Orologio', nav_zones:'Fusi', nav_tools:'Strumenti', nav_cal:'Calendario',
+    stopwatch:'Cronometro', countdown:'Conto alla rovescia', reset:'↺ Reset',
+    compare_title:'Confronta fusi orari', convert_title:'Convertitore di orario',
+    from:'Da', to:'A', convert_btn:'Converti',
+    africa:'Africa', europe:'Europa', americas:'Americhe', asia:'Asia & Oceania', mideast:'Medio Oriente & Asia Centrale',
+    featured:'Città in evidenza', search_placeholder:'Cerca città o paese...',
+    week_label:'Settimana corrente', about:'Chi siamo', contact:'Contatti', privacy:'Privacy',
+    local_time:'La tua ora locale', detecting:'Rilevamento posizione...',
+    start:'▶ Avvia', pause:'⏸ Pausa', resume:'▶ Riprendi',
+    stats:'120 città · 80+ paesi · 38 fusi · In diretta',
+    alert_done:'Conto alla rovescia terminato!',
+    months:['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
+    dows:['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
+    locale:'it-IT',
+    focus_streak:'GIORNI DI FILA', focus_sessions_today:'sessioni oggi',
+    focus_cycle:'Ciclo', focus_goal:'Obiettivo giornaliero', focus_stats:'Statistiche',
+    focus_today:'Oggi', focus_week:'Questa settimana', focus_total:'Totale',
+    focus_session_title:'Sessione Attuale', focus_tasks_title:'Attività del Giorno',
+    focus_working:'Paesi in Orario Lavorativo',
+    focus_city_prefix:'Il tuo tempo di focus a',
+    focus_mode_work:'Lavoro', focus_mode_study:'Studio',
+    focus_mode_meeting:'Riunione', focus_mode_deep:'Lavoro Profondo',
+    focus_start:'▶ Avvia', focus_pause:'⏸ Pausa', focus_resume:'▶ Riprendi',
+    focus_reset:'↺ Reset', focus_skip:'⏭ Salta', focus_zen:'🧘 Zen',
+    task_ph:'Nuova attività...', session_goal_ph:'Cosa vuoi realizzare in questa sessione?',
+    session_notes_ph:'Note rapide, idee, distrazioni da rivedere...',
+    task_done_msg:'Attività completata! 🎉', task_all_done:'Tutte le attività completate! 🏆',
+    sessions_label:'sessioni'
+  },
+  ja: {
+    nav_clock:'時計', nav_zones:'タイムゾーン', nav_tools:'ツール', nav_cal:'カレンダー',
+    stopwatch:'ストップウォッチ', countdown:'カウントダウン', reset:'↺ リセット',
+    compare_title:'タイムゾーンを比較', convert_title:'時間変換',
+    from:'から', to:'へ', convert_btn:'変換',
+    africa:'アフリカ', europe:'ヨーロッパ', americas:'南北アメリカ', asia:'アジア・オセアニア', mideast:'中東・中央アジア',
+    featured:'主要都市', search_placeholder:'都市または国を検索...',
+    week_label:'現在の週', about:'概要', contact:'お問い合わせ', privacy:'プライバシー',
+    local_time:'現地時刻', detecting:'位置情報を取得中...',
+    start:'▶ 開始', pause:'⏸ 一時停止', resume:'▶ 再開',
+    stats:'120都市 · 80以上の国 · 38タイムゾーン · ライブ',
+    alert_done:'カウントダウン終了！',
+    months:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+    dows:['日','月','火','水','木','金','土'],
+    locale:'ja-JP',
+    focus_streak:'連続日数', focus_sessions_today:'本日のセッション',
+    focus_cycle:'サイクル', focus_goal:'1日の目標', focus_stats:'統計',
+    focus_today:'今日', focus_week:'今週', focus_total:'合計',
+    focus_session_title:'現在のセッション', focus_tasks_title:'今日のタスク',
+    focus_working:'現在営業時間中の国',
+    focus_city_prefix:'あなたの集中時間：',
+    focus_mode_work:'仕事', focus_mode_study:'学習',
+    focus_mode_meeting:'会議', focus_mode_deep:'深い作業',
+    focus_start:'▶ 開始', focus_pause:'⏸ 一時停止', focus_resume:'▶ 再開',
+    focus_reset:'↺ リセット', focus_skip:'⏭ スキップ', focus_zen:'🧘 禅',
+    task_ph:'新しいタスク...', session_goal_ph:'このセッションで何を達成したいですか？',
+    session_notes_ph:'メモ、アイデア、後で確認する気晴らし...',
+    task_done_msg:'タスク完了！🎉', task_all_done:'全タスク完了！🏆',
+    sessions_label:'セッション'
+  },
+  ru: {
+    nav_clock:'Часы', nav_zones:'Часовые пояса', nav_tools:'Инструменты', nav_cal:'Календарь',
+    stopwatch:'Секундомер', countdown:'Обратный отсчёт', reset:'↺ Сброс',
+    compare_title:'Сравнить часовые пояса', convert_title:'Конвертер времени',
+    from:'Из', to:'В', convert_btn:'Конвертировать',
+    africa:'Африка', europe:'Европа', americas:'Америка', asia:'Азия и Океания', mideast:'Ближний Восток и Центральная Азия',
+    featured:'Избранные города', search_placeholder:'Поиск города или страны...',
+    week_label:'Текущая неделя', about:'О нас', contact:'Контакты', privacy:'Конфиденциальность',
+    local_time:'Ваше местное время', detecting:'Определение местоположения...',
+    start:'▶ Старт', pause:'⏸ Пауза', resume:'▶ Продолжить',
+    stats:'120 городов · 80+ стран · 38 часовых поясов · Прямой эфир',
+    alert_done:'Обратный отсчёт завершён!',
+    months:['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+    dows:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+    locale:'ru-RU',
+    focus_streak:'ДНЕЙ ПОДРЯД', focus_sessions_today:'сессий сегодня',
+    focus_cycle:'Цикл', focus_goal:'Дневная цель', focus_stats:'Статистика',
+    focus_today:'Сегодня', focus_week:'На этой неделе', focus_total:'Всего',
+    focus_session_title:'Текущая Сессия', focus_tasks_title:'Задачи Дня',
+    focus_working:'Страны в Рабочее Время',
+    focus_city_prefix:'Ваше время фокуса в',
+    focus_mode_work:'Работа', focus_mode_study:'Учёба',
+    focus_mode_meeting:'Встреча', focus_mode_deep:'Глубокая Работа',
+    focus_start:'▶ Старт', focus_pause:'⏸ Пауза', focus_resume:'▶ Продолжить',
+    focus_reset:'↺ Сброс', focus_skip:'⏭ Пропустить', focus_zen:'🧘 Дзен',
+    task_ph:'Новая задача...', session_goal_ph:'Что вы хотите достичь в этой сессии?',
+    session_notes_ph:'Быстрые заметки, идеи, отвлечения для последующего просмотра...',
+    task_done_msg:'Задача выполнена! 🎉', task_all_done:'Все задачи выполнены! 🏆',
+    sessions_label:'сессий'
+  }
+};
+
+// ─── LANGUAGE DETECTION ──────────────────────────────────────────────────────
+function detectLang(){
+  const nav = navigator.language || navigator.userLanguage || 'en';
+  const code = nav.split('-')[0].toLowerCase();
+  return TRANSLATIONS[code] ? code : 'en';
+}
+
+let currentLang = 'en';
+
+function setLang(code){
+  if(code === 'auto') code = detectLang();
+  currentLang = code;
+  const T = TRANSLATIONS[code];
+  document.documentElement.lang = code;
+  // direction
+  document.body.style.direction = code === 'ar' ? 'rtl' : 'ltr';
+  // nav tabs
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(T[key] !== undefined) el.textContent = T[key];
+  });
+  // placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if(T[key] !== undefined) el.placeholder = T[key];
+  });
+  // chrono buttons
+  document.getElementById('chrono-btn').textContent = chronoRunning ? T.pause : (chronoElapsed > 0 ? T.resume : T.start);
+  document.getElementById('cd-btn').textContent = cdRunning ? T.pause : T.start;
+  // stats
+  document.getElementById('stats-text').textContent = T.stats;
+  // featured label
+  document.getElementById('featured-label').textContent = T.featured;
+  // user location
+  document.getElementById('user-location').textContent = T.detecting;
+  // Focus Mode translations — aplicar a todos os elementos visíveis
+  if(T.focus_streak){
+    // Task tag select options
+    const tts = document.getElementById('task-tag-select');
+    if(tts){
+      const personalWord = currentLang==='pt'?'Pessoal':currentLang==='fr'?'Personnel':currentLang==='es'?'Personal':currentLang==='de'?'Persönlich':currentLang==='it'?'Personale':currentLang==='ar'?'شخصي':currentLang==='zh'?'个人':currentLang==='ja'?'個人':currentLang==='ru'?'Личное':'Personal';
+      const tagMap = {work:'💼 '+(T.focus_mode_work||'Work'), study:'📚 '+(T.focus_mode_study||'Study'), personal:'👤 '+personalWord, meeting:'🌍 '+(T.focus_mode_meeting||'Meeting')};
+      tts.querySelectorAll('option').forEach(o => { if(tagMap[o.value]) o.textContent = tagMap[o.value]; });
+    }
+    // Mode buttons
+    document.querySelectorAll('.pm-work').forEach(el => el.textContent = T.focus_mode_work || 'Work');
+    document.querySelectorAll('.pm-study').forEach(el => el.textContent = T.focus_mode_study || 'Study');
+    document.querySelectorAll('.pm-meeting').forEach(el => el.textContent = T.focus_mode_meeting || 'Meeting');
+    document.querySelectorAll('.pm-deep').forEach(el => el.textContent = T.focus_mode_deep || 'Deep Work');
+    // Pomo control buttons
+    const pb = document.getElementById('pomo-btn');
+    if(pb){ const lbl = document.getElementById('pomo-btn-label'); if(lbl){ if(pomoState==='running') lbl.textContent=(T.focus_pause||'⏸ Pause').replace('⏸ ',''); else if(pomoState==='paused') lbl.textContent=(T.focus_resume||'▶ Resume').replace('▶ ',''); else lbl.textContent=(T.focus_start||'▶ Start').replace('▶ ',''); } }
+    const rb=document.getElementById('pomo-reset-btn'); if(rb) rb.textContent='↺ '+(T.focus_reset||'Reset').replace('↺ ','');
+    const skb=document.getElementById('pomo-skip-btn'); if(skb) skb.textContent='⏭ '+(T.focus_skip||'Skip').replace('⏭ ','');
+    const zb=document.getElementById('zen-btn'); if(zb) zb.textContent=T.focus_zen||'🧘 Zen';
+    // All labels
+    const esl=document.getElementById('streak-label'); if(esl) esl.textContent=T.focus_streak||'STREAK';
+    const est=document.getElementById('sessions-today'); if(est) est.textContent=pomoSessionsToday+' '+(T.focus_sessions_today||'sessions today');
+    const ecl=document.getElementById('cycle-label'); if(ecl) ecl.textContent=T.focus_cycle||'Cycle';
+    const egl=document.getElementById('daily-goal-label'); if(egl) egl.textContent=T.focus_goal||'Daily goal';
+    const edp=document.getElementById('daily-progress-label'); if(edp) edp.textContent=pomoSessionsToday+' / 8 '+(T.sessions_label||'sessions');
+    const estl=document.getElementById('stats-title'); if(estl) estl.textContent=T.focus_stats||'Statistics';
+    const etl=document.getElementById('stat-today-label'); if(etl) etl.textContent=T.focus_today||'Today';
+    const ewl=document.getElementById('stat-week-label'); if(ewl) ewl.textContent=T.focus_week||'This week';
+    const eol=document.getElementById('stat-total-label'); if(eol) eol.textContent=T.focus_total||'Total';
+    const eset=document.getElementById('session-title'); if(eset) eset.textContent=T.focus_session_title||'Current Session';
+    const etst=document.getElementById('tasks-title'); if(etst) etst.textContent=T.focus_tasks_title||"Today's Tasks";
+    const ewht=document.getElementById('working-title'); if(ewht) ewht.textContent=T.focus_working||'Countries Working Now';
+    const esg=document.getElementById('session-goal'); if(esg) esg.placeholder=T.session_goal_ph||'What do you want to achieve this session?';
+    const esn=document.getElementById('session-notes'); if(esn) esn.placeholder=T.session_notes_ph||'Quick notes...';
+    const eti=document.getElementById('task-input'); if(eti) eti.placeholder=T.task_ph||'New task...';
+    // Pomo state label
+    const epsl=document.getElementById('pomo-state-label');
+    if(epsl && pomoState==='idle'){ const fw=currentLang==='pt'?'FOCO':currentLang==='es'?'FOCO':currentLang==='de'?'FOKUS':currentLang==='ar'?'تركيز':currentLang==='zh'?'专注':currentLang==='ja'?'集中':currentLang==='ru'?'ФОКУС':'FOCUS'; epsl.textContent=fw; }
+    // City line, quote, dynamic content
+    updateFocusCityLine();
+    if(typeof QUOTES !== 'undefined'){
+      const langQuotes=QUOTES[currentLang]||QUOTES['en'];
+      const qEl=document.getElementById('daily-quote');
+      if(qEl) qEl.textContent=langQuotes[Math.floor(Math.random()*langQuotes.length)];
+    }
+    if(typeof pomoUpdateStats==='function') pomoUpdateStats();
+    if(typeof renderTasks==='function') renderTasks();
+    if(typeof updateWorkingHours==='function') updateWorkingHours();
+  }
+  // calendar
+  renderCal();
+  // update main clock date format immediately
+  updateMainClock();
+}
+
+// ─── CITIES ──────────────────────────────────────────────────────────────────
+const CITIES = [
+  // AFRICA
+  {name:'Maputo',tz:'Africa/Maputo',region:'africa'},
+  {name:'Beira',tz:'Africa/Maputo',region:'africa'},
+  {name:'Nampula',tz:'Africa/Maputo',region:'africa'},
+  {name:'Luanda',tz:'Africa/Luanda',region:'africa'},
+  {name:'Nairobi',tz:'Africa/Nairobi',region:'africa'},
+  {name:'Lagos',tz:'Africa/Lagos',region:'africa'},
+  {name:'Cairo',tz:'Africa/Cairo',region:'africa'},
+  {name:'Johannesburg',tz:'Africa/Johannesburg',region:'africa'},
+  {name:'Accra',tz:'Africa/Accra',region:'africa'},
+  {name:'Dar es Salaam',tz:'Africa/Dar_es_Salaam',region:'africa'},
+  {name:'Harare',tz:'Africa/Harare',region:'africa'},
+  {name:'Lusaka',tz:'Africa/Lusaka',region:'africa'},
+  {name:'Kinshasa',tz:'Africa/Kinshasa',region:'africa'},
+  {name:'Abidjan',tz:'Africa/Abidjan',region:'africa'},
+  {name:'Addis Ababa',tz:'Africa/Addis_Ababa',region:'africa'},
+  {name:'Khartoum',tz:'Africa/Khartoum',region:'africa'},
+  {name:'Casablanca',tz:'Africa/Casablanca',region:'africa'},
+  {name:'Tunis',tz:'Africa/Tunis',region:'africa'},
+  {name:'Dakar',tz:'Africa/Dakar',region:'africa'},
+  {name:'Kampala',tz:'Africa/Kampala',region:'africa'},
+  {name:'Antananarivo',tz:'Indian/Antananarivo',region:'africa'},
+  {name:'Windhoek',tz:'Africa/Windhoek',region:'africa'},
+  {name:'Gaborone',tz:'Africa/Gaborone',region:'africa'},
+  {name:'Mbabane',tz:'Africa/Mbabane',region:'africa'},
+  {name:'Maseru',tz:'Africa/Maseru',region:'africa'},
+  // EUROPE
+  {name:'Lisbon',tz:'Europe/Lisbon',region:'europe'},
+  {name:'London',tz:'Europe/London',region:'europe'},
+  {name:'Paris',tz:'Europe/Paris',region:'europe'},
+  {name:'Berlin',tz:'Europe/Berlin',region:'europe'},
+  {name:'Madrid',tz:'Europe/Madrid',region:'europe'},
+  {name:'Rome',tz:'Europe/Rome',region:'europe'},
+  {name:'Moscow',tz:'Europe/Moscow',region:'europe'},
+  {name:'Amsterdam',tz:'Europe/Amsterdam',region:'europe'},
+  {name:'Brussels',tz:'Europe/Brussels',region:'europe'},
+  {name:'Vienna',tz:'Europe/Vienna',region:'europe'},
+  {name:'Zurich',tz:'Europe/Zurich',region:'europe'},
+  {name:'Stockholm',tz:'Europe/Stockholm',region:'europe'},
+  {name:'Oslo',tz:'Europe/Oslo',region:'europe'},
+  {name:'Copenhagen',tz:'Europe/Copenhagen',region:'europe'},
+  {name:'Helsinki',tz:'Europe/Helsinki',region:'europe'},
+  {name:'Warsaw',tz:'Europe/Warsaw',region:'europe'},
+  {name:'Prague',tz:'Europe/Prague',region:'europe'},
+  {name:'Budapest',tz:'Europe/Budapest',region:'europe'},
+  {name:'Athens',tz:'Europe/Athens',region:'europe'},
+  {name:'Bucharest',tz:'Europe/Bucharest',region:'europe'},
+  {name:'Kyiv',tz:'Europe/Kiev',region:'europe'},
+  {name:'Belgrade',tz:'Europe/Belgrade',region:'europe'},
+  {name:'Dublin',tz:'Europe/Dublin',region:'europe'},
+  {name:'Reykjavik',tz:'Atlantic/Reykjavik',region:'europe'},
+  // AMERICAS
+  {name:'New York',tz:'America/New_York',region:'americas'},
+  {name:'Los Angeles',tz:'America/Los_Angeles',region:'americas'},
+  {name:'Chicago',tz:'America/Chicago',region:'americas'},
+  {name:'São Paulo',tz:'America/Sao_Paulo',region:'americas'},
+  {name:'Buenos Aires',tz:'America/Argentina/Buenos_Aires',region:'americas'},
+  {name:'Rio de Janeiro',tz:'America/Sao_Paulo',region:'americas'},
+  {name:'Santiago',tz:'America/Santiago',region:'americas'},
+  {name:'Lima',tz:'America/Lima',region:'americas'},
+  {name:'Bogotá',tz:'America/Bogota',region:'americas'},
+  {name:'Caracas',tz:'America/Caracas',region:'americas'},
+  {name:'Mexico City',tz:'America/Mexico_City',region:'americas'},
+  {name:'Toronto',tz:'America/Toronto',region:'americas'},
+  {name:'Vancouver',tz:'America/Vancouver',region:'americas'},
+  {name:'Miami',tz:'America/New_York',region:'americas'},
+  {name:'Houston',tz:'America/Chicago',region:'americas'},
+  {name:'Havana',tz:'America/Havana',region:'americas'},
+  {name:'Panama City',tz:'America/Panama',region:'americas'},
+  {name:'Quito',tz:'America/Guayaquil',region:'americas'},
+  {name:'La Paz',tz:'America/La_Paz',region:'americas'},
+  {name:'Montevideo',tz:'America/Montevideo',region:'americas'},
+  // ASIA & OCEANIA
+  {name:'Tokyo',tz:'Asia/Tokyo',region:'asia'},
+  {name:'Beijing',tz:'Asia/Shanghai',region:'asia'},
+  {name:'Shanghai',tz:'Asia/Shanghai',region:'asia'},
+  {name:'Hong Kong',tz:'Asia/Hong_Kong',region:'asia'},
+  {name:'Singapore',tz:'Asia/Singapore',region:'asia'},
+  {name:'Seoul',tz:'Asia/Seoul',region:'asia'},
+  {name:'Sydney',tz:'Australia/Sydney',region:'asia'},
+  {name:'Melbourne',tz:'Australia/Melbourne',region:'asia'},
+  {name:'Perth',tz:'Australia/Perth',region:'asia'},
+  {name:'Auckland',tz:'Pacific/Auckland',region:'asia'},
+  {name:'Jakarta',tz:'Asia/Jakarta',region:'asia'},
+  {name:'Bangkok',tz:'Asia/Bangkok',region:'asia'},
+  {name:'Kuala Lumpur',tz:'Asia/Kuala_Lumpur',region:'asia'},
+  {name:'Manila',tz:'Asia/Manila',region:'asia'},
+  {name:'Ho Chi Minh',tz:'Asia/Ho_Chi_Minh',region:'asia'},
+  {name:'Colombo',tz:'Asia/Colombo',region:'asia'},
+  {name:'Dhaka',tz:'Asia/Dhaka',region:'asia'},
+  {name:'Yangon',tz:'Asia/Rangoon',region:'asia'},
+  {name:'Ulaanbaatar',tz:'Asia/Ulaanbaatar',region:'asia'},
+  {name:'Vladivostok',tz:'Asia/Vladivostok',region:'asia'},
+  // MIDDLE EAST & CENTRAL ASIA
+  {name:'Dubai',tz:'Asia/Dubai',region:'me'},
+  {name:'Riyadh',tz:'Asia/Riyadh',region:'me'},
+  {name:'Tehran',tz:'Asia/Tehran',region:'me'},
+  {name:'Baghdad',tz:'Asia/Baghdad',region:'me'},
+  {name:'Istanbul',tz:'Europe/Istanbul',region:'me'},
+  {name:'Tel Aviv',tz:'Asia/Jerusalem',region:'me'},
+  {name:'Amman',tz:'Asia/Amman',region:'me'},
+  {name:'Beirut',tz:'Asia/Beirut',region:'me'},
+  {name:'Kuwait City',tz:'Asia/Kuwait',region:'me'},
+  {name:'Doha',tz:'Asia/Qatar',region:'me'},
+  {name:'Abu Dhabi',tz:'Asia/Dubai',region:'me'},
+  {name:'Muscat',tz:'Asia/Muscat',region:'me'},
+  {name:'Kabul',tz:'Asia/Kabul',region:'me'},
+  {name:'Tashkent',tz:'Asia/Tashkent',region:'me'},
+  {name:'Almaty',tz:'Asia/Almaty',region:'me'},
+  {name:'Mumbai',tz:'Asia/Kolkata',region:'me'},
+  {name:'New Delhi',tz:'Asia/Kolkata',region:'me'},
+  {name:'Karachi',tz:'Asia/Karachi',region:'me'},
+  {name:'Islamabad',tz:'Asia/Karachi',region:'me'},
+  {name:'Baku',tz:'Asia/Baku',region:'me'},
+];
+
+// ─── CLOCK ───────────────────────────────────────────────────────────────────
+function cityTime(tz){
+  try{
+    const now = new Date();
+    const T = TRANSLATIONS[currentLang];
+    const s = now.toLocaleTimeString(T.locale,{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+    const d = now.toLocaleDateString(T.locale,{timeZone:tz,weekday:'short',day:'2-digit',month:'short'});
+    return {time:s, date:d};
+  }catch(e){return {time:'--:--:--',date:''};}
+}
+
+function makeCityCard(c){
+  const key = c.name.replace(/[\s\/\.]/g,'_');
+  const div = document.createElement('div');
+  div.className = 'city-card';
+  div.dataset.name = (c.name+' '+c.region).toLowerCase();
+  const tag = c.region==='africa' ? '<span class="african-tag">AF</span>' : '';
+  div.innerHTML = `<div class="city-name">${c.name}${tag}</div><div class="city-time" id="ct-${key}">--:--:--</div><div class="city-date" id="cd2-${key}">--</div>`;
+  return div;
+}
+
+// Build home grid (featured)
+const featured = ['Maputo','New York','London','Dubai','Tokyo','São Paulo','Paris','Nairobi','Sydney'];
+const worldGrid = document.getElementById('world-grid');
+featured.forEach(name => {
+  const c = CITIES.find(x => x.name === name);
+  if(c) worldGrid.appendChild(makeCityCard(c));
+});
+
+// Build zones grids
+const grids = {africa:'africa-grid',europe:'europe-grid',americas:'americas-grid',asia:'asia-grid',me:'me-grid'};
+Object.entries(grids).forEach(([region,id]) => {
+  const g = document.getElementById(id);
+  CITIES.filter(c => c.region === region).forEach(c => g.appendChild(makeCityCard(c)));
+});
+
+function updateAllCities(){
+  CITIES.forEach(c => {
+    const key = c.name.replace(/[\s\/\.]/g,'_');
+    const {time, date} = cityTime(c.tz);
+    document.querySelectorAll(`#ct-${key}`).forEach(el => el.textContent = time);
+    document.querySelectorAll(`#cd2-${key}`).forEach(el => el.textContent = date);
+  });
+}
+
+function updateMainClock(){
+  const T = TRANSLATIONS[currentLang];
+  const now = new Date();
+  const t = now.toLocaleTimeString(T.locale,{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+  const parts = t.split(':');
+  document.getElementById('main-time').innerHTML = `${parts[0]}<span>:</span>${parts[1]}<span>:</span>${parts[2]}`;
+  const d = now.toLocaleDateString(T.locale,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('main-date').textContent = d.charAt(0).toUpperCase()+d.slice(1);
+  try{
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const off = -(now.getTimezoneOffset()/60);
+    document.getElementById('tz-label').textContent = tz+' (UTC'+(off>=0?'+':'')+off+')';
+    document.getElementById('user-location').textContent = T.local_time+' · '+tz.split('/').pop().replace(/_/g,' ');
+  }catch(e){}
+}
+
+setInterval(()=>{ updateMainClock(); updateAllCities(); }, 1000);
+
+// ─── CHRONO ───────────────────────────────────────────────────────────────────
+let chronoRunning=false, chronoStart=0, chronoElapsed=0, chronoInterval=null;
+function chronoToggle(){
+  const T = TRANSLATIONS[currentLang];
+  const btn = document.getElementById('chrono-btn');
+  if(!chronoRunning){
+    chronoStart = Date.now()-chronoElapsed;
+    chronoInterval = setInterval(updateChrono, 100);
+    chronoRunning = true;
+    btn.textContent = T.pause;
+  } else {
+    clearInterval(chronoInterval);
+    chronoElapsed = Date.now()-chronoStart;
+    chronoRunning = false;
+    btn.textContent = T.resume;
+  }
+}
+function chronoReset(){
+  clearInterval(chronoInterval); chronoRunning=false; chronoElapsed=0;
+  document.getElementById('chrono-display').textContent='00:00:00';
+  document.getElementById('chrono-btn').textContent = TRANSLATIONS[currentLang].start;
+}
+function updateChrono(){
+  const el = Date.now()-chronoStart;
+  const h=Math.floor(el/3600000), m=Math.floor((el%3600000)/60000), s=Math.floor((el%60000)/1000);
+  document.getElementById('chrono-display').textContent=`${p(h)}:${p(m)}:${p(s)}`;
+}
+
+// ─── ALARM SYSTEM ────────────────────────────────────────────────────────────
+let audioCtx = null;
+let alarmInterval = null;
+
+function getAudioCtx(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playTone(type, duration){
+  const ctx = getAudioCtx();
+  const patterns = {
+    digital: [{f:880,d:0.1},{f:0,d:0.05},{f:880,d:0.1},{f:0,d:0.05},{f:880,d:0.1},{f:0,d:0.3}],
+    gentle:  [{f:523,d:0.4},{f:659,d:0.4},{f:784,d:0.6}],
+    urgent:  [{f:1200,d:0.08},{f:0,d:0.04},{f:1200,d:0.08},{f:0,d:0.04},{f:1200,d:0.08},{f:0,d:0.04},{f:1200,d:0.08},{f:0,d:0.2}],
+    bell:    [{f:1047,d:0.6},{f:0,d:0.1},{f:1047,d:0.3},{f:0,d:0.5}],
+    beep:    [{f:700,d:0.2},{f:0,d:0.2},{f:700,d:0.2},{f:0,d:0.6}]
+  };
+  const seq = patterns[type] || patterns.digital;
+  let t = ctx.currentTime;
+  seq.forEach(note => {
+    if(note.f > 0){
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = note.f;
+      osc.type = type === 'bell' ? 'sine' : type === 'gentle' ? 'sine' : 'square';
+      gain.gain.setValueAtTime(0.4, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + note.d);
+      osc.start(t); osc.stop(t + note.d);
+    }
+    t += note.d;
+  });
+}
+
+function previewTone(){
+  const type = document.getElementById('alarm-tone').value;
+  playTone(type, 2);
+}
+
+function toggleTonePanel(){
+  const panel = document.getElementById('tone-panel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+const TONE_LABELS = {
+  digital: '⏰ Digital — Clássico despertador',
+  gentle:  '🌅 Suave — Acordar gentil',
+  urgent:  '🚨 Urgente — Alerta forte',
+  bell:    '🔔 Sino — Tom de sino',
+  beep:    '📟 Beep — Tom simples'
+};
+
+function updateToneLabel(){
+  const type = document.getElementById('alarm-tone').value;
+  const label = document.getElementById('active-tone-label');
+  const icon = label.previousElementSibling;
+  if(label) label.textContent = TONE_LABELS[type].split('— ')[1] || TONE_LABELS[type];
+  if(icon) icon.textContent = TONE_LABELS[type].split(' ')[0];
+  document.getElementById('tone-panel').style.display = 'none';
+}
+
+function startAlarm(){
+  const type = document.getElementById('alarm-tone').value;
+  document.getElementById('stop-alarm-btn').style.display = 'inline-block';
+  document.getElementById('cd-display').style.color = '#ff4466';
+  playTone(type, 3);
+  alarmInterval = setInterval(()=> playTone(type, 3), 3000);
+}
+
+function stopAlarm(){
+  clearInterval(alarmInterval); alarmInterval = null;
+  document.getElementById('stop-alarm-btn').style.display = 'none';
+  document.getElementById('cd-display').style.color = '';
+  document.getElementById('cd-display').textContent = '00:00:00';
+}
+
+// ─── COUNTDOWN ───────────────────────────────────────────────────────────────
+let cdRunning=false, cdRemaining=300, cdInterval2=null;
+function cdToggle(){
+  const T = TRANSLATIONS[currentLang];
+  const btn = document.getElementById('cd-btn');
+  if(!cdRunning){
+    if(!cdInterval2){ cdRemaining = parseInt(document.getElementById('cd-h').value||0)*3600+parseInt(document.getElementById('cd-m').value||0)*60+parseInt(document.getElementById('cd-s').value||0); }
+    if(cdRemaining<=0) return;
+    cdInterval2 = setInterval(()=>{
+      cdRemaining--;
+      updateCD();
+      if(cdRemaining<=0){
+        clearInterval(cdInterval2); cdInterval2=null; cdRunning=false;
+        btn.textContent=T.start;
+        startAlarm();
+      }
+    },1000);
+    cdRunning=true; btn.textContent=T.pause;
+  } else {
+    clearInterval(cdInterval2); cdInterval2=null; cdRunning=false; btn.textContent=T.start;
+  }
+}
+function cdReset(){
+  clearInterval(cdInterval2); cdInterval2=null; cdRunning=false; cdRemaining=0;
+  stopAlarm();
+  document.getElementById('cd-btn').textContent=TRANSLATIONS[currentLang].start;
+}
+function updateCD(){ const h=Math.floor(cdRemaining/3600),m=Math.floor((cdRemaining%3600)/60),s=cdRemaining%60; document.getElementById('cd-display').textContent=`${p(h)}:${p(m)}:${p(s)}`; }
+function p(n){ return String(n).padStart(2,'0'); }
+
+// ─── CALENDAR ────────────────────────────────────────────────────────────────
+let calYear=new Date().getFullYear(), calMonth=new Date().getMonth();
+function renderCal(){
+  const T = TRANSLATIONS[currentLang];
+  document.getElementById('cal-month-label').textContent = T.months[calMonth]+' '+calYear;
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = T.dows.map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  const first = new Date(calYear,calMonth,1).getDay();
+  const days = new Date(calYear,calMonth+1,0).getDate();
+  const today = new Date();
+  for(let i=0;i<first;i++) grid.innerHTML+=`<div class="cal-day other-month">${new Date(calYear,calMonth,-(first-i-1)).getDate()}</div>`;
+  for(let d=1;d<=days;d++){
+    const isToday=d===today.getDate()&&calMonth===today.getMonth()&&calYear===today.getFullYear();
+    grid.innerHTML+=`<div class="cal-day${isToday?' today':''}">${d}</div>`;
+  }
+  const wn=getWeekNum(today);
+  document.getElementById('week-num').textContent=wn;
+}
+function getWeekNum(d){ const onejan=new Date(d.getFullYear(),0,1); return Math.ceil((((d-onejan)/86400000)+onejan.getDay()+1)/7); }
+function calPrev(){ calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCal(); }
+function calNext(){ calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCal(); }
+
+// ─── ZONE SEARCH ────────────────────────────────────────────────────────────
+function filterZones(){
+  const q = document.getElementById('zone-search').value.toLowerCase();
+  document.querySelectorAll('#africa-grid .city-card,#europe-grid .city-card,#americas-grid .city-card,#asia-grid .city-card,#me-grid .city-card').forEach(c=>{
+    c.style.display = c.dataset.name.includes(q) ? '' : 'none';
+  });
+}
+
+// ─── TOOLS SELECTS ──────────────────────────────────────────────────────────
+['cmp-a','cmp-b','conv-from','conv-to'].forEach(id=>{
+  const s = document.getElementById(id);
+  if(!s) return;
+  CITIES.forEach((c,i)=>{ const o=document.createElement('option'); o.value=c.tz; o.textContent=c.name; if(id==='cmp-b'&&i===1) o.selected=true; s.appendChild(o); });
+});
+document.getElementById('cmp-a').addEventListener('change', compareTZ);
+document.getElementById('cmp-b').addEventListener('change', compareTZ);
+function compareTZ(){
+  const tzA=document.getElementById('cmp-a').value, tzB=document.getElementById('cmp-b').value;
+  const T = TRANSLATIONS[currentLang];
+  const now=new Date();
+  const tA=now.toLocaleTimeString(T.locale,{timeZone:tzA,hour:'2-digit',minute:'2-digit',hour12:false});
+  const tB=now.toLocaleTimeString(T.locale,{timeZone:tzB,hour:'2-digit',minute:'2-digit',hour12:false});
+  const nA=document.getElementById('cmp-a').options[document.getElementById('cmp-a').selectedIndex].text;
+  const nB=document.getElementById('cmp-b').options[document.getElementById('cmp-b').selectedIndex].text;
+  document.getElementById('cmp-result').innerHTML=`<strong style="color:var(--accent)">${tA}</strong> — <em>${nA}</em><br><span style="color:var(--muted);font-size:12px">vs</span><br><strong style="color:var(--accent2)">${tB}</strong> — <em>${nB}</em>`;
+}
+compareTZ();
+
+function convertTime(){
+  const t=document.getElementById('conv-time').value;
+  const tzFrom=document.getElementById('conv-from').value;
+  const tzTo=document.getElementById('conv-to').value;
+  const [h,m]=t.split(':').map(Number);
+  const now=new Date(); now.setHours(h,m,0,0);
+  try{
+    const result=new Date(now.toLocaleString('en-US',{timeZone:tzFrom}));
+    const dest=new Date(now.getTime()+(now-result));
+    const T=TRANSLATIONS[currentLang];
+    document.getElementById('conv-result').textContent=dest.toLocaleTimeString(T.locale,{timeZone:tzTo,hour:'2-digit',minute:'2-digit',hour12:false});
+  }catch(e){ document.getElementById('conv-result').textContent='—'; }
+}
+
+// ─── NAV ─────────────────────────────────────────────────────────────────────
+function showPage(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── THEME ───────────────────────────────────────────────────────────────────
+let dark=true;
+function toggleTheme(){
+  dark=!dark;
+  const r=document.documentElement.style;
+  const btn=document.getElementById('theme-btn');
+  if(!dark){r.setProperty('--bg','#f4f4f8');r.setProperty('--surface','#ffffff');r.setProperty('--surface2','#f0f0f4');r.setProperty('--text','#0a0a1a');r.setProperty('--muted','#666688');r.setProperty('--border','#ddddee');btn.textContent='🌙';}
+  else{r.setProperty('--bg','#0a0a0f');r.setProperty('--surface','#13131a');r.setProperty('--surface2','#1c1c28');r.setProperty('--text','#f0f0f8');r.setProperty('--muted','#8888aa');r.setProperty('--border','#2a2a3a');btn.textContent='☀';}
+}
+
+// ─── POMODORO SYSTEM ─────────────────────────────────────────────────────────
+const QUOTES = {
+  pt: [
+    '"A concentração é a raiz de toda a habilidade humana." — Bruce Lee',
+    '"Faz uma coisa de cada vez, e fá-la bem." — Peter Drucker',
+    '"O segredo de avançar é começar." — Mark Twain',
+    '"A disciplina é a ponte entre metas e realizações." — Jim Rohn',
+    '"O tempo é o recurso mais valioso que temos." — Peter Drucker',
+    '"Grandes resultados requerem grande ambição." — Heraclito',
+    '"Não é a força, mas a constância dos esforços que produz grandes resultados." — Samuel Johnson',
+  ],
+  en: [
+    '"Concentration is the root of all human ability." — Bruce Lee',
+    '"Do one thing at a time, and do it well." — Peter Drucker',
+    '"The secret of getting ahead is getting started." — Mark Twain',
+    '"Discipline is the bridge between goals and accomplishment." — Jim Rohn',
+    '"Time is the most valuable resource we have." — Peter Drucker',
+    '"Great results require great ambition." — Heraclitus',
+    '"It\'s not the strength but the constancy of effort that produces results." — Samuel Johnson',
+  ],
+  fr: [
+    '"La concentration est la racine de toute compétence humaine." — Bruce Lee',
+    '"Faites une chose à la fois, et faites-la bien." — Peter Drucker',
+    '"Le secret pour avancer est de commencer." — Mark Twain',
+    '"La discipline est le pont entre les objectifs et les réalisations." — Jim Rohn',
+    '"Le temps est la ressource la plus précieuse." — Peter Drucker',
+    '"Grands résultats exigent grande ambition." — Héraclite',
+    '"Ce n\'est pas la force mais la constance qui produit de grands résultats." — Samuel Johnson',
+  ],
+  es: [
+    '"La concentración es la raíz de toda habilidad humana." — Bruce Lee',
+    '"Haz una cosa a la vez y hazla bien." — Peter Drucker',
+    '"El secreto para avanzar es comenzar." — Mark Twain',
+    '"La disciplina es el puente entre las metas y los logros." — Jim Rohn',
+    '"El tiempo es el recurso más valioso que tenemos." — Peter Drucker',
+    '"Grandes resultados requieren gran ambición." — Heráclito',
+    '"No es la fuerza sino la constancia la que produce grandes resultados." — Samuel Johnson',
+  ],
+  ar: [
+    '"التركيز هو جذر كل القدرات البشرية." — بروس لي',
+    '"افعل شيئاً واحداً في كل مرة وافعله بشكل جيد." — بيتر دراكر',
+    '"سر التقدم هو البداية." — مارك توين',
+    '"الانضباط هو الجسر بين الأهداف والإنجازات." — جيم رون',
+    '"الوقت هو أثمن مورد لدينا." — بيتر دراكر',
+    '"النتائج العظيمة تتطلب طموحاً عظيماً." — هيراقليطس',
+    '"ليست القوة بل الثبات هو ما ينتج نتائج عظيمة." — صامويل جونسون',
+  ],
+  zh: [
+    '"专注是人类所有能力的根源。" — 李小龙',
+    '"一次只做一件事，把它做好。" — 彼得·德鲁克',
+    '"前进的秘诀是开始行动。" — 马克·吐温',
+    '"纪律是目标与成就之间的桥梁。" — 吉姆·罗恩',
+    '"时间是我们最宝贵的资源。" — 彼得·德鲁克',
+    '"伟大的结果需要伟大的抱负。" — 赫拉克利特',
+    '"不是力量而是持续的努力产生伟大的结果。" — 塞缪尔·约翰逊',
+  ],
+  de: [
+    '"Konzentration ist die Wurzel aller menschlichen Fähigkeiten." — Bruce Lee',
+    '"Tu eine Sache auf einmal und tu sie gut." — Peter Drucker',
+    '"Das Geheimnis des Vorankommens ist der Anfang." — Mark Twain',
+    '"Disziplin ist die Brücke zwischen Zielen und Leistungen." — Jim Rohn',
+    '"Zeit ist die wertvollste Ressource, die wir haben." — Peter Drucker',
+    '"Große Ergebnisse erfordern großen Ehrgeiz." — Heraklit',
+    '"Nicht Stärke, sondern Beständigkeit erzeugt große Ergebnisse." — Samuel Johnson',
+  ],
+  it: [
+    '"La concentrazione è la radice di tutte le abilità umane." — Bruce Lee',
+    '"Fai una cosa alla volta e falla bene." — Peter Drucker',
+    '"Il segreto per andare avanti è iniziare." — Mark Twain',
+    '"La disciplina è il ponte tra gli obiettivi e i risultati." — Jim Rohn',
+    '"Il tempo è la risorsa più preziosa che abbiamo." — Peter Drucker',
+    '"Grandi risultati richiedono grande ambizione." — Eraclito',
+    '"Non è la forza ma la costanza che produce grandi risultati." — Samuel Johnson',
+  ],
+  ja: [
+    '"集中力はすべての人間能力の根源です。" — ブルース・リー',
+    '"一度に一つのことをし、それをうまくやれ。" — ピーター・ドラッカー',
+    '"前進の秘訣は始めることだ。" — マーク・トウェイン',
+    '"規律は目標と達成の橋である。" — ジム・ローン',
+    '"時間は私たちが持つ最も貴重な資源だ。" — ピーター・ドラッカー',
+    '"偉大な結果には偉大な野心が必要だ。" — ヘラクレイトス',
+    '"偉大な結果を生むのは力ではなく一貫性だ。" — サミュエル・ジョンソン',
+  ],
+  ru: [
+    '"Концентрация — корень всех человеческих способностей." — Брюс Ли',
+    '"Делай одно дело за раз и делай его хорошо." — Питер Друкер',
+    '"Секрет движения вперёд — это начало." — Марк Твен',
+    '"Дисциплина — это мост между целями и достижениями." — Джим Рон',
+    '"Время — наш самый ценный ресурс." — Питер Друкер',
+    '"Великие результаты требуют великих амбиций." — Гераклит',
+    '"Не сила, а постоянство усилий даёт великие результаты." — Сэмюэл Джонсон',
+  ],
+};
+
+let pomoState = 'idle'; // idle, focus, short_break, long_break
+let pomoMode = 'work';
+let pomoMinutes = 25;
+let pomoSeconds = 0;
+let pomoTotal = 25 * 60;
+let pomoRemaining = 25 * 60;
+let pomoInterval = null;
+let pomoCycle = 0;
+let pomoSessionsToday = 0;
+let pomoSessionsWeek = 0;
+let pomoSessionsTotal = 0;
+let pomoStreak = 0;
+let tasks = [];
+
+// Load from localStorage
+function pomoLoad(){
+  try{
+    const d = localStorage.getItem('wc_pomo');
+    if(d){
+      const p = JSON.parse(d);
+      pomoSessionsToday = p.today || 0;
+      pomoSessionsWeek = p.week || 0;
+      pomoSessionsTotal = p.total || 0;
+      pomoStreak = p.streak || 0;
+      tasks = p.tasks || [];
+      const today = new Date().toDateString();
+      if(p.date !== today){ pomoSessionsToday = 0; }
+    }
+  }catch(e){}
+  // Stats and quotes will be applied by setLang after lang is detected
+}
+
+function pomoSave(){
+  try{
+    localStorage.setItem('wc_pomo', JSON.stringify({
+      today: pomoSessionsToday, week: pomoSessionsWeek,
+      total: pomoSessionsTotal, streak: pomoStreak,
+      tasks, date: new Date().toDateString()
+    }));
+  }catch(e){}
+}
+
+function pomoUpdateStats(){
+  const T = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
+  document.getElementById('stat-today').textContent = pomoSessionsToday;
+  document.getElementById('stat-week').textContent = pomoSessionsWeek;
+  document.getElementById('stat-total').textContent = pomoSessionsTotal;
+  document.getElementById('streak-count').textContent = pomoStreak;
+  const st = document.getElementById('sessions-today');
+  if(st) st.textContent = pomoSessionsToday + ' ' + (T.focus_sessions_today || 'sessions today');
+  const pct = Math.min((pomoSessionsToday / 8) * 100, 100);
+  document.getElementById('daily-progress-bar').style.width = pct + '%';
+  const dl = document.getElementById('daily-progress-label');
+  if(dl) dl.textContent = pomoSessionsToday + ' / 8 ' + (T.sessions_label || 'sessions');
+}
+
+function setPomoMode(mode, mins, btn){
+  pomoMode = mode; pomoMinutes = mins;
+  pomoReset();
+  document.querySelectorAll('.pomo-mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function pomoToggle(){
+  const T = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
+  const btn = document.getElementById('pomo-btn');
+  if(pomoState === 'idle' || pomoState === 'paused'){
+    if(pomoState === 'idle'){ pomoRemaining = pomoMinutes * 60; pomoTotal = pomoRemaining; }
+    pomoState = 'running';
+    btn.textContent = T.focus_pause || '⏸ Pause';
+    document.body.classList.add('focus-mode');
+    pomoInterval = setInterval(pomoTick, 1000);
+  } else if(pomoState === 'running'){
+    pomoState = 'paused';
+    btn.textContent = T.focus_resume || '▶ Resume';
+    clearInterval(pomoInterval);
+  }
+}
+
+function pomoTick(){
+  if(pomoRemaining <= 0){ pomoComplete(); return; }
+  pomoRemaining--;
+  const m = Math.floor(pomoRemaining / 60);
+  const s = pomoRemaining % 60;
+  const disp = p(m) + ':' + p(s);
+  document.getElementById('pomo-display').textContent = disp;
+  document.title = disp + ' · WorldClock.live';
+  const pct = 1 - (pomoRemaining / pomoTotal);
+  const circ = 553;
+  document.getElementById('pomo-ring-fg').style.strokeDashoffset = circ * pct;
+}
+
+function pomoComplete(){
+  clearInterval(pomoInterval);
+  pomoState = 'idle';
+  document.getElementById('pomo-btn').textContent = '▶ Iniciar';
+  document.title = 'WorldClock.live — Hora Exata no Mundo';
+
+  if(document.getElementById('pomo-state-label').textContent === 'FOCO'){
+    pomoSessionsToday++; pomoSessionsWeek++; pomoSessionsTotal++;
+    pomoCycle = (pomoCycle + 1) % 4;
+    if(pomoCycle === 0){ pomoStreak++; }
+    document.getElementById('dot-' + ((pomoCycle === 0 ? 4 : pomoCycle) - 1)).style.background = '#a78bfa';
+    document.getElementById('pomo-cycle').textContent = pomoCycle + 1;
+    pomoSave(); pomoUpdateStats();
+    if(pomoCycle % 4 === 0){
+      startBreak(15, 'PAUSA LONGA', '#00e5a0');
+    } else {
+      startBreak(5, 'PAUSA CURTA', '#00b8d4');
+    }
+  } else {
+    document.getElementById('pomo-state-label').textContent = 'FOCO';
+    document.getElementById('pomo-ring-fg').style.stroke = '#a78bfa';
+    document.body.classList.remove('focus-mode');
+  }
+  playTone('urgent', 2);
+}
+
+function startBreak(mins, label, color){
+  pomoRemaining = mins * 60; pomoTotal = pomoRemaining;
+  document.getElementById('pomo-state-label').textContent = label;
+  document.getElementById('pomo-ring-fg').style.stroke = color;
+  document.getElementById('pomo-display').textContent = p(mins) + ':00';
+  document.body.classList.remove('focus-mode');
+  pomoState = 'running';
+  document.getElementById('pomo-btn').textContent = '⏸ Pausar';
+  pomoInterval = setInterval(pomoTick, 1000);
+}
+
+function pomoReset(){
+  clearInterval(pomoInterval);
+  pomoState = 'idle';
+  pomoRemaining = pomoMinutes * 60;
+  pomoTotal = pomoRemaining;
+  document.getElementById('pomo-display').textContent = p(pomoMinutes) + ':00';
+  document.getElementById('pomo-state-label').textContent = 'FOCO';
+  document.getElementById('pomo-ring-fg').style.strokeDashoffset = '0';
+  document.getElementById('pomo-ring-fg').style.stroke = '#a78bfa';
+  document.getElementById('pomo-btn').textContent = '▶ Iniciar';
+  document.title = 'WorldClock.live — Hora Exata no Mundo';
+  document.body.classList.remove('focus-mode');
+}
+
+function pomoSkip(){
+  clearInterval(pomoInterval);
+  pomoComplete();
+}
+
+// ─── TASKS ───────────────────────────────────────────────────────────────────
+const TAG_LABELS = {work:'💼 Trabalho', study:'📚 Estudo', personal:'👤 Pessoal', meeting:'🌍 Reunião'};
+const TAG_CLASSES = {work:'tag-work', study:'tag-study', personal:'tag-personal', meeting:'tag-meeting'};
+
+function addTask(){
+  const input = document.getElementById('task-input');
+  const tag = document.getElementById('task-tag-select').value;
+  const text = input.value.trim();
+  if(!text) return;
+  tasks.push({id: Date.now(), text, tag, done: false, date: new Date().toDateString()});
+  input.value = '';
+  renderTasks();
+  pomoSave();
+}
+
+function toggleTask(id){
+  const t = tasks.find(t => t.id === id);
+  if(t) t.done = !t.done;
+  renderTasks();
+  pomoSave();
+}
+
+function deleteTask(id){
+  tasks = tasks.filter(t => t.id !== id);
+  renderTasks();
+  pomoSave();
+}
+
+function renderTasks(){
+  const T = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
+  const list = document.getElementById('task-list');
+  if(!list) return;
+  const today = new Date().toDateString();
+  const todayTasks = tasks.filter(t => t.date === today);
+  // Dynamic tag labels based on current language
+  const dynTags = {
+    work: '💼 ' + (T.focus_mode_work || 'Work'),
+    study: '📚 ' + (T.focus_mode_study || 'Study'),
+    personal: '👤 ' + (currentLang==='pt'?'Pessoal':currentLang==='fr'?'Personnel':currentLang==='es'?'Personal':currentLang==='de'?'Persönlich':currentLang==='it'?'Personale':currentLang==='ar'?'شخصي':currentLang==='zh'?'个人':currentLang==='ja'?'個人':currentLang==='ru'?'Личное':'Personal'),
+    meeting: '🌍 ' + (T.focus_mode_meeting || 'Meeting')
+  };
+  list.innerHTML = todayTasks.map(t => `
+    <div class="task-item ${t.done?'done':''}">
+      <div class="task-check ${t.done?'checked':''}" onclick="toggleTask(${t.id})">${t.done?'✓':''}</div>
+      <span class="task-text">${t.text}</span>
+      <span class="task-tag ${TAG_CLASSES[t.tag]}">${dynTags[t.tag]||t.tag}</span>
+      <button onclick="deleteTask(${t.id})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px">✕</button>
+    </div>
+  `).join('');
+  const done = todayTasks.filter(t => t.done).length;
+  const sumEl = document.getElementById('task-summary');
+  if(sumEl) sumEl.textContent = todayTasks.length + ' ' + (currentLang==='pt'?'tarefas':currentLang==='fr'?'tâches':currentLang==='es'?'tareas':currentLang==='de'?'Aufgaben':currentLang==='it'?'attività':currentLang==='ar'?'مهام':currentLang==='zh'?'任务':currentLang==='ja'?'タスク':currentLang==='ru'?'задач':'tasks') + ' · ' + done + ' ' + (currentLang==='pt'?'concluídas':currentLang==='fr'?'terminées':currentLang==='es'?'completadas':currentLang==='de'?'erledigt':currentLang==='it'?'completate':currentLang==='ar'?'مكتملة':currentLang==='zh'?'完成':currentLang==='ja'?'完了':currentLang==='ru'?'выполнено':'done');
+}
+
+// ─── WORKING HOURS ───────────────────────────────────────────────────────────
+function updateFocusCityLine(){
+  const T = TRANSLATIONS[currentLang];
+  const el = document.getElementById('focus-city-text');
+  if(!el) return;
+  try{
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const city = tz.split('/').pop().replace(/_/g,' ');
+    el.textContent = (T.focus_city_prefix || 'Your focus time in') + ' ' + city;
+  }catch(e){ el.textContent = T.focus_city_prefix || 'Your focus time'; }
+}
+
+function toggleTask(id){
+  const t = tasks.find(t => t.id === id);
+  if(!t) return;
+  t.done = !t.done;
+  renderTasks();
+  pomoSave();
+  const T = TRANSLATIONS[currentLang];
+  if(t.done){
+    // Play a soft bell tone
+    playTone('bell', 1);
+    // Show mini toast
+    showTaskToast(T.task_done_msg || 'Task completed! 🎉');
+    // Check if all done
+    const today = new Date().toDateString();
+    const todayTasks = tasks.filter(t => t.date === today);
+    const allDone = todayTasks.length > 0 && todayTasks.every(t => t.done);
+    if(allDone){
+      setTimeout(()=> showTaskToast(T.task_all_done || 'All tasks done! 🏆', true), 1200);
+    }
+  }
+}
+
+function showTaskToast(msg, isChampion=false){
+  const existing = document.getElementById('task-toast-msg');
+  if(existing) existing.remove();
+  const div = document.createElement('div');
+  div.id = 'task-toast-msg';
+  div.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+    background:${isChampion ? 'linear-gradient(135deg,#a78bfa,#00e5a0)' : 'var(--surface)'};
+    border:1px solid ${isChampion ? 'transparent' : '#a78bfa'};
+    color:${isChampion ? '#000' : 'var(--text)'};
+    border-radius:20px;padding:10px 20px;font-size:14px;font-weight:600;
+    z-index:9999;font-family:Sora,sans-serif;
+    animation:slideUp .3s ease;box-shadow:0 4px 20px rgba(0,0,0,.3)`;
+  div.textContent = msg;
+  document.body.appendChild(div);
+  setTimeout(()=>{ if(div.parentNode) div.remove(); }, 2500);
+}
+
+function updateWorkingHours(){
+  const workingText = currentLang==='pt'?'Em trabalho':currentLang==='fr'?'En travail':currentLang==='es'?'Trabajando':currentLang==='de'?'In Arbeit':currentLang==='it'?'Al lavoro':currentLang==='ar'?'في العمل':currentLang==='zh'?'工作中':currentLang==='ja'?'勤務中':currentLang==='ru'?'На работе':'Working';
+  const noWorkText = currentLang==='pt'?'Nenhuma cidade em horário laboral agora.':currentLang==='fr'?'Aucune ville en horaire de travail.':currentLang==='es'?'Ninguna ciudad en horario laboral.':currentLang==='de'?'Keine Stadt in Arbeitszeit.':currentLang==='it'?'Nessuna città in orario lavorativo.':currentLang==='ar'?'لا توجد مدينة في وقت العمل الآن.':currentLang==='zh'?'目前没有城市在工作时间。':currentLang==='ja'?'現在勤務時間中の都市はありません。':currentLang==='ru'?'Нет городов в рабочее время.':'No cities currently in working hours.';
+  const zones = [
+    {city:'Lisbon',tz:'Europe/Lisbon'},{city:'London',tz:'Europe/London'},
+    {city:'Paris',tz:'Europe/Paris'},{city:'New York',tz:'America/New_York'},
+    {city:'Dubai',tz:'Asia/Dubai'},{city:'Tokyo',tz:'Asia/Tokyo'},
+    {city:'São Paulo',tz:'America/Sao_Paulo'},{city:'Nairobi',tz:'Africa/Nairobi'},
+    {city:'Singapore',tz:'Asia/Singapore'},{city:'Sydney',tz:'Australia/Sydney'},
+    {city:'Maputo',tz:'Africa/Maputo'},{city:'Lagos',tz:'Africa/Lagos'},
+  ];
+  const working = zones.filter(z => {
+    try{
+      const h = parseInt(new Date().toLocaleTimeString('en',{timeZone:z.tz,hour:'2-digit',hour12:false}));
+      return h >= 8 && h < 18;
+    }catch(e){ return false; }
+  });
+  const el = document.getElementById('working-hours-list');
+  if(!el) return;
+  if(working.length === 0){
+    el.innerHTML = `<div style="color:var(--muted);font-size:12px">${noWorkText}</div>`;
+  } else {
+    el.innerHTML = working.map(z => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>${z.city}</span><span style="color:var(--accent);font-size:11px">✅ ${workingText}</span></div>`).join('');
+  }
+}
+setInterval(updateWorkingHours, 60000);
+
+// Init Pomodoro — moved into init() below
+
+// ─── PWA SERVICE WORKER ──────────────────────────────────────────────────────
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/worldclock/sw.js').catch(()=>{});
+  });
+}
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner = document.getElementById('install-banner');
+  if(banner) banner.style.display = 'flex';
+});
+
+// ─── MODALS ───────────────────────────────────────────────────────────────────
+function openModal(id){
+  const m = document.getElementById('modal-'+id);
+  if(m){ m.style.display='flex'; document.body.style.overflow='hidden'; }
+}
+function closeModal(id){
+  const m = document.getElementById('modal-'+id);
+  if(m){ m.style.display='none'; document.body.style.overflow=''; }
+}
+// Close modal on background click
+document.addEventListener('click', e => {
+  ['about','contact','privacy'].forEach(id => {
+    const m = document.getElementById('modal-'+id);
+    if(m && e.target === m) closeModal(id);
+  });
+});
+function submitContact(){
+  const name = document.getElementById('contact-name').value.trim();
+  const email = document.getElementById('contact-email').value.trim();
+  const msg = document.getElementById('contact-msg').value.trim();
+  if(!name || !email || !msg){ showTaskToast('Please fill all fields.'); return; }
+  // Open mailto as fallback (no server needed)
+  const subject = document.getElementById('contact-subject').value;
+  const body = `Name: ${name}\nEmail: ${email}\n\n${msg}`;
+  window.location.href = `mailto:contact@worldclock.live?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  showTaskToast('Opening your email client... 📧');
+  setTimeout(()=> closeModal('contact'), 1500);
+}
+
+// ─── INIT — must be last, after all functions and constants are defined ───────
+(function init(){
+  const detected = detectLang();
+  currentLang = detected;
+  const sel = document.getElementById('lang-selector');
+  if(sel) sel.value = detected;
+  pomoLoad();          // load saved data
+  renderCal();         // calendar with correct lang
+  setLang(detected);   // translate entire interface
+  pomoUpdateStats();   // update streak/session numbers
+  renderTasks();       // render task list
+  updateWorkingHours(); // show working countries
+  updateMainClock();   // start main clock
+  updateAllCities();   // update city clocks
+})();
+</script>
+</body>
+</html>
