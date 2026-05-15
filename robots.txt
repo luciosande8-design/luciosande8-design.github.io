@@ -1,0 +1,7 @@
+# 1. Permite que todos os robôs rastreiem o site
+User-agent: *
+Disallow: /projetos-privados/
+Disallow: /config/
+
+# 2. Indica onde está o mapa do seu site para facilitar a indexação
+Sitemap: https://luciosande8-design.github.io/sitemap.xml
