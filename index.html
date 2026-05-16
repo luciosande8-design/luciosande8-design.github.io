@@ -2,17 +2,11 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorldClock.live — Hora Exata no Mundo</title>
-    
-    <meta name="description" content="WorldClock.live – Exact time worldwide. Check international time zones, use the stopwatch, countdown, calendar, and improve your productivity.">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://luciosande8-design.github.io/">
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://luciosande8-design.github.io/">
-    <meta property="og:title" content="WorldClock.live — Hora Exata no Mundo">
-    <meta property="og:description" content="Real-time world clock. 120+ cities, 80+ countries, 38 time zones and productivity tools.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="WorldClock.live — Exact time worldwide. Time zones, stopwatch, countdown, calendar.">
+<meta property="og:title" content="WorldClock.live">
+<meta property="og:description" content="Real-time world clock. 120+ cities, 80+ countries, 38 time zones.">
+<title>WorldClock.live — Hora Exata no Mundo</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0f'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%2300e5a0' stroke-width='1.5'/%3E%3Cline x1='16' y1='16' x2='23' y2='8' stroke='%2300e5a0' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='16' y1='16' x2='11' y2='22' stroke='%2300b8d4' stroke-width='1.2' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%2300e5a0'/%3E%3Cline x1='16' y1='5' x2='16' y2='8' stroke='%2300e5a0' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='27' y1='16' x2='24' y2='16' stroke='%2300e5a0' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='16' y1='27' x2='16' y2='24' stroke='%2300e5a0' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='5' y1='16' x2='8' y2='16' stroke='%2300e5a0' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00e5a0">
@@ -198,7 +192,7 @@ body.focus-mode nav{border-bottom-color:#a78bfa44!important}
 </nav>
 
 <div class="stats-bar" id="stats-bar">
-  <span id="stats-text">120 cities · 80+ countries · 38 time zones · Live</span>
+  <span id="stats-text">190+ cities · 120+ countries · 40+ time zones · Live</span>
 </div>
 
 <!-- BANNER DE INSTALAÇÃO PWA -->
@@ -615,7 +609,7 @@ const TRANSLATIONS = {
     week_label:'Semana actual', about:'Sobre', contact:'Contacto', privacy:'Privacidade',
     local_time:'Sua hora local', detecting:'Detectando localização...',
     start:'▶ Iniciar', pause:'⏸ Pausar', resume:'▶ Continuar',
-    stats:'120 cidades · 80+ países · 38 fusos · Tempo real',
+    stats:'190+ cidades · 120+ países · 40+ fusos · Tempo real',
     alert_done:'Contagem regressiva concluída!',
     months:['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
     dows:['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
@@ -675,7 +669,7 @@ const TRANSLATIONS = {
     week_label:'Semaine en cours', about:'À propos', contact:'Contact', privacy:'Confidentialité',
     local_time:'Votre heure locale', detecting:'Détection de la position...',
     start:'▶ Démarrer', pause:'⏸ Pause', resume:'▶ Reprendre',
-    stats:'120 villes · 80+ pays · 38 fuseaux · En direct',
+    stats:'190+ villes · 120+ pays · 40+ fuseaux · En direct',
     alert_done:'Compte à rebours terminé !',
     months:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
     dows:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
@@ -705,7 +699,7 @@ const TRANSLATIONS = {
     week_label:'Semana actual', about:'Acerca de', contact:'Contacto', privacy:'Privacidad',
     local_time:'Tu hora local', detecting:'Detectando ubicación...',
     start:'▶ Iniciar', pause:'⏸ Pausar', resume:'▶ Continuar',
-    stats:'120 ciudades · 80+ países · 38 zonas · En vivo',
+    stats:'190+ ciudades · 120+ países · 40+ zonas · En vivo',
     alert_done:'¡Cuenta regresiva terminada!',
     months:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
     dows:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
@@ -735,7 +729,7 @@ const TRANSLATIONS = {
     week_label:'الأسبوع الحالي', about:'حول', contact:'اتصل', privacy:'الخصوصية',
     local_time:'توقيتك المحلي', detecting:'جارٍ تحديد الموقع...',
     start:'▶ ابدأ', pause:'⏸ توقف', resume:'▶ استمر',
-    stats:'١٢٠ مدينة · ٨٠+ دولة · ٣٨ منطقة زمنية · مباشر',
+    stats:'١٩٠+ مدينة · ١٢٠+ دولة · ٤٠+ منطقة زمنية · مباشر',
     alert_done:'انتهى العد التنازلي!',
     months:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
     dows:['أحد','إثن','ثلا','أرب','خمس','جمع','سبت'],
@@ -765,7 +759,7 @@ const TRANSLATIONS = {
     week_label:'当前周', about:'关于', contact:'联系', privacy:'隐私',
     local_time:'您的本地时间', detecting:'正在检测位置...',
     start:'▶ 开始', pause:'⏸ 暂停', resume:'▶ 继续',
-    stats:'120个城市 · 80+个国家 · 38个时区 · 实时',
+    stats:'190+个城市 · 120+个国家 · 40+个时区 · 实时',
     alert_done:'倒计时结束！',
     months:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
     dows:['日','一','二','三','四','五','六'],
@@ -795,7 +789,7 @@ const TRANSLATIONS = {
     week_label:'Aktuelle Woche', about:'Über', contact:'Kontakt', privacy:'Datenschutz',
     local_time:'Ihre Ortszeit', detecting:'Standort wird ermittelt...',
     start:'▶ Start', pause:'⏸ Pause', resume:'▶ Weiter',
-    stats:'120 Städte · 80+ Länder · 38 Zeitzonen · Live',
+    stats:'190+ Städte · 120+ Länder · 40+ Zeitzonen · Live',
     alert_done:'Countdown beendet!',
     months:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
     dows:['So','Mo','Di','Mi','Do','Fr','Sa'],
@@ -825,7 +819,7 @@ const TRANSLATIONS = {
     week_label:'Settimana corrente', about:'Chi siamo', contact:'Contatti', privacy:'Privacy',
     local_time:'La tua ora locale', detecting:'Rilevamento posizione...',
     start:'▶ Avvia', pause:'⏸ Pausa', resume:'▶ Riprendi',
-    stats:'120 città · 80+ paesi · 38 fusi · In diretta',
+    stats:'190+ città · 120+ paesi · 40+ fusi · In diretta',
     alert_done:'Conto alla rovescia terminato!',
     months:['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
     dows:['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
@@ -855,7 +849,7 @@ const TRANSLATIONS = {
     week_label:'現在の週', about:'概要', contact:'お問い合わせ', privacy:'プライバシー',
     local_time:'現地時刻', detecting:'位置情報を取得中...',
     start:'▶ 開始', pause:'⏸ 一時停止', resume:'▶ 再開',
-    stats:'120都市 · 80以上の国 · 38タイムゾーン · ライブ',
+    stats:'190+都市 · 120+以上の国 · 40+タイムゾーン · ライブ',
     alert_done:'カウントダウン終了！',
     months:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
     dows:['日','月','火','水','木','金','土'],
@@ -885,7 +879,7 @@ const TRANSLATIONS = {
     week_label:'Текущая неделя', about:'О нас', contact:'Контакты', privacy:'Конфиденциальность',
     local_time:'Ваше местное время', detecting:'Определение местоположения...',
     start:'▶ Старт', pause:'⏸ Пауза', resume:'▶ Продолжить',
-    stats:'120 городов · 80+ стран · 38 часовых поясов · Прямой эфир',
+    stats:'190+ городов · 120+ стран · 40+ часовых поясов · Прямой эфир',
     alert_done:'Обратный отсчёт завершён!',
     months:['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
     dows:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
@@ -1114,6 +1108,93 @@ const CITIES = [
   {name:'Karachi',tz:'Asia/Karachi',region:'me'},
   {name:'Islamabad',tz:'Asia/Karachi',region:'me'},
   {name:'Baku',tz:'Asia/Baku',region:'me'},
+  // NOVAS CIDADES — MAIO 2026
+  // África (adicionais)
+  {name:'Rabat',tz:'Africa/Casablanca',region:'africa'},
+  {name:'Tripoli',tz:'Africa/Tripoli',region:'africa'},
+  {name:'Algiers',tz:'Africa/Algiers',region:'africa'},
+  {name:'Bamako',tz:'Africa/Bamako',region:'africa'},
+  {name:'Conakry',tz:'Africa/Conakry',region:'africa'},
+  {name:'Abuja',tz:'Africa/Lagos',region:'africa'},
+  {name:'Douala',tz:'Africa/Douala',region:'africa'},
+  {name:'Libreville',tz:'Africa/Libreville',region:'africa'},
+  {name:'Brazzaville',tz:'Africa/Brazzaville',region:'africa'},
+  {name:'Kigali',tz:'Africa/Kigali',region:'africa'},
+  {name:'Bujumbura',tz:'Africa/Bujumbura',region:'africa'},
+  {name:'Mogadishu',tz:'Africa/Mogadishu',region:'africa'},
+  {name:'Djibouti',tz:'Africa/Djibouti',region:'africa'},
+  {name:'Asmara',tz:'Africa/Asmara',region:'africa'},
+  {name:'Juba',tz:'Africa/Juba',region:'africa'},
+  {name:'Bangui',tz:'Africa/Bangui',region:'africa'},
+  {name:'N-Djamena',tz:'Africa/Ndjamena',region:'africa'},
+  {name:'Niamey',tz:'Africa/Niamey',region:'africa'},
+  {name:'Ouagadougou',tz:'Africa/Ouagadougou',region:'africa'},
+  {name:'Freetown',tz:'Africa/Freetown',region:'africa'},
+  {name:'Monrovia',tz:'Africa/Monrovia',region:'africa'},
+  {name:'Yamoussoukro',tz:'Africa/Abidjan',region:'africa'},
+  {name:'Lomé',tz:'Africa/Lome',region:'africa'},
+  {name:'Cotonou',tz:'Africa/Porto-Novo',region:'africa'},
+  {name:'Porto-Novo',tz:'Africa/Porto-Novo',region:'africa'},
+  // Europa (adicionais)
+  {name:'Berlin',tz:'Europe/Berlin',region:'europe'},
+  {name:'Lisbon',tz:'Europe/Lisbon',region:'europe'},
+  {name:'Bern',tz:'Europe/Zurich',region:'europe'},
+  {name:'Luxembourg',tz:'Europe/Luxembourg',region:'europe'},
+  {name:'Monaco',tz:'Europe/Monaco',region:'europe'},
+  {name:'Andorra',tz:'Europe/Andorra',region:'europe'},
+  {name:'Valletta',tz:'Europe/Malta',region:'europe'},
+  {name:'Nicosia',tz:'Asia/Nicosia',region:'europe'},
+  {name:'Tirana',tz:'Europe/Tirane',region:'europe'},
+  {name:'Skopje',tz:'Europe/Skopje',region:'europe'},
+  {name:'Sarajevo',tz:'Europe/Sarajevo',region:'europe'},
+  {name:'Podgorica',tz:'Europe/Podgorica',region:'europe'},
+  {name:'Pristina',tz:'Europe/Belgrade',region:'europe'},
+  {name:'Sofia',tz:'Europe/Sofia',region:'europe'},
+  {name:'Chisinau',tz:'Europe/Chisinau',region:'europe'},
+  {name:'Minsk',tz:'Europe/Minsk',region:'europe'},
+  {name:'Vilnius',tz:'Europe/Vilnius',region:'europe'},
+  {name:'Riga',tz:'Europe/Riga',region:'europe'},
+  {name:'Tallinn',tz:'Europe/Tallinn',region:'europe'},
+  // Américas (adicionais)
+  {name:'Asunción',tz:'America/Asuncion',region:'americas'},
+  {name:'Georgetown',tz:'America/Guyana',region:'americas'},
+  {name:'Paramaribo',tz:'America/Paramaribo',region:'americas'},
+  {name:'Cayenne',tz:'America/Cayenne',region:'americas'},
+  {name:'Port of Spain',tz:'America/Port_of_Spain',region:'americas'},
+  {name:'Kingston',tz:'America/Jamaica',region:'americas'},
+  {name:'Nassau',tz:'America/Nassau',region:'americas'},
+  {name:'Santo Domingo',tz:'America/Santo_Domingo',region:'americas'},
+  {name:'Port-au-Prince',tz:'America/Port-au-Prince',region:'americas'},
+  {name:'Guatemala City',tz:'America/Guatemala',region:'americas'},
+  {name:'San Salvador',tz:'America/El_Salvador',region:'americas'},
+  {name:'Tegucigalpa',tz:'America/Tegucigalpa',region:'americas'},
+  {name:'Managua',tz:'America/Managua',region:'americas'},
+  {name:'San José',tz:'America/Costa_Rica',region:'americas'},
+  {name:'Montevideo',tz:'America/Montevideo',region:'americas'},
+  // Ásia & Oceânia (adicionais)
+  {name:'Taipei',tz:'Asia/Taipei',region:'asia'},
+  {name:'Hanoi',tz:'Asia/Bangkok',region:'asia'},
+  {name:'Phnom Penh',tz:'Asia/Phnom_Penh',region:'asia'},
+  {name:'Vientiane',tz:'Asia/Vientiane',region:'asia'},
+  {name:'Kathmandu',tz:'Asia/Kathmandu',region:'asia'},
+  {name:'Thimphu',tz:'Asia/Thimphu',region:'asia'},
+  {name:'Male',tz:'Indian/Maldives',region:'asia'},
+  {name:'Wellington',tz:'Pacific/Auckland',region:'asia'},
+  {name:'Suva',tz:'Pacific/Fiji',region:'asia'},
+  {name:'Port Moresby',tz:'Pacific/Port_Moresby',region:'asia'},
+  {name:'Dili',tz:'Asia/Dili',region:'asia'},
+  {name:'Bandar Seri Begawan',tz:'Asia/Brunei',region:'asia'},
+  {name:'Ulan Bator',tz:'Asia/Ulaanbaatar',region:'asia'},
+  // Médio Oriente (adicionais)
+  {name:'Ashgabat',tz:'Asia/Ashgabat',region:'me'},
+  {name:'Bishkek',tz:'Asia/Bishkek',region:'me'},
+  {name:'Dushanbe',tz:'Asia/Dushanbe',region:'me'},
+  {name:'Nur-Sultan',tz:'Asia/Almaty',region:'me'},
+  {name:'Yerevan',tz:'Asia/Yerevan',region:'me'},
+  {name:'Tbilisi',tz:'Asia/Tbilisi',region:'me'},
+  {name:'Sanaa',tz:'Asia/Aden',region:'me'},
+  {name:'Manama',tz:'Asia/Bahrain',region:'me'},
+  {name:'Nicosia',tz:'Asia/Nicosia',region:'me'},
 ];
 
 // ─── CLOCK ───────────────────────────────────────────────────────────────────
@@ -1128,7 +1209,7 @@ function cityTime(tz){
 }
 
 function makeCityCard(c){
-  const key = c.name.replace(/[\s\/\.]/g,'_');
+  const key = c.name.replace(/[\s\/\.'`,\(\)#]/g,'_').replace(/[àáâã]/g,'a').replace(/[èéê]/g,'e').replace(/[ìíî]/g,'i').replace(/[òóô]/g,'o').replace(/[ùúû]/g,'u').replace(/[ñ]/g,'n');
   const div = document.createElement('div');
   div.className = 'city-card';
   div.dataset.name = (c.name+' '+c.region).toLowerCase();
@@ -1154,7 +1235,7 @@ Object.entries(grids).forEach(([region,id]) => {
 
 function updateAllCities(){
   CITIES.forEach(c => {
-    const key = c.name.replace(/[\s\/\.]/g,'_');
+    const key = c.name.replace(/[\s\/\.'`,\(\)#]/g,'_').replace(/[àáâã]/g,'a').replace(/[èéê]/g,'e').replace(/[ìíî]/g,'i').replace(/[òóô]/g,'o').replace(/[ùúû]/g,'u').replace(/[ñ]/g,'n');
     const {time, date} = cityTime(c.tz);
     document.querySelectorAll(`#ct-${key}`).forEach(el => el.textContent = time);
     document.querySelectorAll(`#cd2-${key}`).forEach(el => el.textContent = date);
