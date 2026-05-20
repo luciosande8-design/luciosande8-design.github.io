@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Current Time in Madrid | WorldClock.live</title>
+<meta name="description" content="Live current time in Madrid, Spain. Accurate timezone Europe/Madrid with live clock updated every second.">
+<meta name="keywords" content="current time Madrid, Madrid time now, Madrid timezone, time in Madrid">
+<link rel="canonical" href="https://luciosande8-design.github.io/madrid-time.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0f1e;--card:#111827;--accent:#38bdf8;--accent2:#818cf8;--text:#f1f5f9;--muted:#94a3b8;--border:rgba(56,189,248,0.15);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-x:hidden;}
+body::before{content:'';position:fixed;top:-200px;left:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(56,189,248,0.07) 0%,transparent 70%);pointer-events:none;}
+.container{max-width:640px;width:100%;text-align:center;}
+.label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;font-family:'Space Mono',monospace;}
+h1{font-size:clamp(28px,6vw,48px);font-weight:800;line-height:1.1;margin-bottom:8px;}
+.country{color:var(--muted);font-size:14px;margin-bottom:40px;letter-spacing:1px;}
+.clock-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px 30px;margin-bottom:24px;position:relative;overflow:hidden;}
+.clock-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+#clock{font-family:'Space Mono',monospace;font-size:clamp(42px,10vw,72px);font-weight:700;color:var(--accent);letter-spacing:2px;text-shadow:0 0 40px rgba(56,189,248,0.3);}
+#date{font-size:14px;color:var(--muted);margin-top:12px;font-family:'Space Mono',monospace;}
+#tz-tag{display:inline-block;margin-top:16px;padding:4px 14px;border:1px solid var(--border);border-radius:100px;font-size:11px;letter-spacing:2px;color:var(--accent2);font-family:'Space Mono',monospace;text-transform:uppercase;}
+.desc{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:32px;}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
+.tools a{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;color:var(--text);text-decoration:none;font-size:13px;font-weight:700;transition:border-color 0.2s,color 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.tools a:hover{border-color:var(--accent);color:var(--accent);}
+.back{display:inline-block;color:var(--muted);text-decoration:none;font-size:13px;letter-spacing:1px;transition:color 0.2s;}
+.back:hover{color:var(--accent);}
+.back::before{content:'← ';}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="label">Live Time</div>
+  <h1>Current Time in Madrid</h1>
+  <div class="country">Spain &nbsp;·&nbsp; Europe/Madrid</div>
+  <div class="clock-card">
+    <div id="clock">--:--:--</div>
+    <div id="date"></div>
+    <div id="tz-tag">Europe/Madrid</div>
+  </div>
+  <p class="desc">Real-time local clock for Madrid, Spain. Updated every second using the official <strong>Europe/Madrid</strong> timezone.</p>
+  <div class="tools">
+    <a href="tools/converter.html">⇄ Time Converter</a>
+    <a href="tools/pomodoro.html">⏱ Pomodoro Timer</a>
+  </div>
+  <a href="index.html" class="back">Back to WorldClock.live</a>
+</div>
+<script>
+function update(){
+  var now=new Date();
+  var opts={timeZone:"Europe/Madrid",hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false};
+  var dateOpts={timeZone:"Europe/Madrid",weekday:'long',year:'numeric',month:'long',day:'numeric'};
+  document.getElementById('clock').textContent=now.toLocaleTimeString('en-US',opts);
+  document.getElementById('date').textContent=now.toLocaleDateString('en-US',dateOpts);
+}
+update();setInterval(update,1000);
+</script>
+</body>
+</html>
