@@ -3,19 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>World Clock – Global Time & Productivity Tools</title>
-
 <meta name="description" content="Check current time worldwide, use Pomodoro timer, convert time zones and plan meetings.">
-
 <style>
-body { background:#0f172a; color:white; font-family:Arial; text-align:center; }
-.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px; padding:20px;}
-.card { background:#1e293b; padding:15px; border-radius:10px;}
-a { color:#38bdf8; text-decoration:none; display:block; margin:5px;}
+body { background:#0a0f1e; color:white; font-family:Arial; text-align:center; margin:0; padding:0; }
+h1 { font-size:clamp(24px,5vw,42px); margin:30px 20px 10px; }
+h2 { font-size:18px; color:#94a3b8; letter-spacing:2px; text-transform:uppercase; margin:30px 0 15px; }
+p { color:#94a3b8; margin:0 20px 10px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; padding:0 20px 10px; max-width:960px; margin:0 auto; }
+.card { background:#111827; border:1px solid rgba(56,189,248,0.15); padding:16px; border-radius:12px; transition:border-color 0.2s; }
+.card:hover { border-color:#38bdf8; }
+.card a { color:#f1f5f9; text-decoration:none; font-weight:700; font-size:15px; display:block; }
+.card a:hover { color:#38bdf8; }
+.tool-card { background:#111827; border:1px solid rgba(56,189,248,0.15); padding:18px; border-radius:12px; transition:border-color 0.2s; }
+.tool-card:hover { border-color:#38bdf8; }
+.tool-card a { color:#38bdf8; text-decoration:none; font-weight:700; font-size:15px; display:block; }
+.label { font-size:11px; color:#94a3b8; letter-spacing:1px; margin-top:4px; }
+footer { margin:40px 20px; color:#475569; font-size:12px; }
 </style>
 </head>
-
 <body>
 
 <h1>🌍 World Clock & Productivity Hub</h1>
@@ -23,21 +29,33 @@ a { color:#38bdf8; text-decoration:none; display:block; margin:5px;}
 
 <h2>🌐 Popular Cities</h2>
 <div class="grid">
-<a href="maputo-time.html">Maputo</a>
-<a href="london-time.html">London</a>
-<a href="paris-time.html">Paris</a>
-<a href="lagos-time.html">Lagos</a>
-<a href="johannesburg-time.html">Johannesburg</a>
+  <div class="card"><a href="maputo-time.html">Maputo</a><div class="label">Mozambique</div></div>
+  <div class="card"><a href="london-time.html">London</a><div class="label">United Kingdom</div></div>
+  <div class="card"><a href="paris-time.html">Paris</a><div class="label">France</div></div>
+  <div class="card"><a href="lagos-time.html">Lagos</a><div class="label">Nigeria</div></div>
+  <div class="card"><a href="johannesburg-time.html">Johannesburg</a><div class="label">South Africa</div></div>
+  <div class="card"><a href="berlin-time.html">Berlin</a><div class="label">Germany</div></div>
+  <div class="card"><a href="madrid-time.html">Madrid</a><div class="label">Spain</div></div>
+  <div class="card"><a href="rome-time.html">Rome</a><div class="label">Italy</div></div>
+  <div class="card"><a href="newyork-time.html">New York</a><div class="label">United States</div></div>
+  <div class="card"><a href="losangeles-time.html">Los Angeles</a><div class="label">United States</div></div>
+  <div class="card"><a href="tokyo-time.html">Tokyo</a><div class="label">Japan</div></div>
+  <div class="card"><a href="dubai-time.html">Dubai</a><div class="label">UAE</div></div>
+  <div class="card"><a href="mumbai-time.html">Mumbai</a><div class="label">India</div></div>
+  <div class="card"><a href="singapore-time.html">Singapore</a><div class="label">Singapore</div></div>
+  <div class="card"><a href="cairo-time.html">Cairo</a><div class="label">Egypt</div></div>
 </div>
 
 <h2>🛠 Tools</h2>
 <div class="grid">
-<a href="tools/pomodoro.html">Pomodoro Timer</a>
-<a href="tools/converter.html">Time Zone Converter</a>
+  <div class="tool-card"><a href="tools/pomodoro.html">⏱ Pomodoro Timer</a></div>
+  <div class="tool-card"><a href="tools/converter.html">⇄ Time Zone Converter</a></div>
 </div>
 
 <h2>🚀 Upgrade (Future)</h2>
 <p>Advanced scheduling & alerts coming soon.</p>
+
+<footer>© 2025 WorldClock.live — All rights reserved</footer>
 
 </body>
 </html>
