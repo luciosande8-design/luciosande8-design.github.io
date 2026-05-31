@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pomodoro Timer | WorldClock.live</title>
+<meta name="description" content="Free Pomodoro timer with task tracking and focus sessions. Boost your productivity with the WorldClock Pomodoro tool.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --card: #111827;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: rgba(56,189,248,0.15);
+    --danger: #f87171;
+    --success: #34d399;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(56,189,248,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header {
+    width: 100%;
+    max-width: 680px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  header a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+  }
+  header a:hover { color: var(--text); }
+  h1 {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+  .main {
+    width: 100%;
+    max-width: 680px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .modes {
+    display: flex;
+    gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+  }
+  .mode-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .mode-btn.active { background: var(--accent); color: #0a0f1e; }
+  .mode-btn:hover:not(.active) { color: var(--text); }
+  .timer-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .timer-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .timer-card.running::before { opacity: 1; }
+  .ring-container {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 28px;
+  }
+  .ring-svg { transform: rotate(-90deg); width: 220px; height: 220px; }
+  .ring-bg { fill: none; stroke: rgba(56,189,248,0.08); stroke-width: 6; }
+  .ring-progress {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 628;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear, stroke 0.3s;
+  }
+  .ring-progress.break { stroke: var(--accent2); }
+  .ring-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .time-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+  .session-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .controls {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 4px;
+  }
+  .btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .btn-primary { background: var(--accent); color: #0a0f1e; min-width: 120px; }
+  .btn-primary:hover { background: #7dd3fc; }
+  .btn-primary.break-mode { background: var(--accent2); }
+  .btn-primary.break-mode:hover { background: #a5b4fc; }
+  .btn-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .btn-secondary:hover { color: var(--text); border-color: var(--muted); }
+  .sessions { display: flex; gap: 8px; justify-content: center; margin-top: 20px; }
+  .session-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 1px solid rgba(56,189,248,0.3);
+    transition: background 0.3s;
+  }
+  .session-dot.done { background: var(--accent); border-color: var(--accent); }
+  .tasks-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .tasks-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .tasks-title { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-family: 'Space Mono', monospace; }
+  .tasks-count { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+  .task-input-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .task-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .task-input:focus { border-color: var(--accent); }
+  .task-input::placeholder { color: var(--muted); }
+  .btn-add {
+    background: var(--accent);
+    color: #0a0f1e;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.2s;
+    line-height: 1;
+  }
+  .btn-add:hover { background: #7dd3fc; }
+  .task-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; }
+  .task-list::-webkit-scrollbar { width: 4px; }
+  .task-list::-webkit-scrollbar-track { background: transparent; }
+  .task-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .task-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.2s;
+  }
+  .task-item:hover { border-color: rgba(56,189,248,0.3); }
+  .task-item.done { opacity: 0.5; }
+  .task-check {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .task-check:hover { border-color: var(--accent); }
+  .task-check.checked { background: var(--accent); border-color: var(--accent); }
+  .task-check.checked::after { content: '✓'; font-size: 10px; color: #0a0f1e; font-weight: 700; }
+  .task-text { flex: 1; font-size: 14px; color: var(--text); }
+  .task-item.done .task-text { text-decoration: line-through; color: var(--muted); }
+  .task-delete {
+    background: none; border: none; color: var(--muted);
+    cursor: pointer; font-size: 16px; padding: 2px 4px;
+    border-radius: 4px; transition: color 0.2s; line-height: 1;
+  }
+  .task-delete:hover { color: var(--danger); }
+  .empty-tasks { text-align: center; color: var(--muted); font-size: 13px; padding: 20px; font-family: 'Space Mono', monospace; }
+  .stats { display: flex; gap: 12px; }
+  .stat-card {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-value { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+  .notif {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--accent);
+    color: #0a0f1e;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700; font-size: 14px;
+    letter-spacing: 0.5px;
+    transition: transform 0.3s ease;
+    z-index: 100;
+    white-space: nowrap;
+  }
+  .notif.show { transform: translateX(-50%) translateY(0); }
+  .notif.break-notif { background: var(--accent2); }
+  footer { margin-top: 32px; color: var(--muted); font-size: 12px; font-family: 'Space Mono', monospace; text-align: center; }
+  footer a { color: var(--accent); text-decoration: none; }
+  @media (max-width: 480px) {
+    .time-display { font-size: 40px; }
+    .ring-container { width: 180px; height: 180px; }
+    .ring-svg { width: 180px; height: 180px; }
+    .stats { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="../index.html">← World Clock</a>
+  <h1>Pomodoro Timer</h1>
+  <span style="width:80px"></span>
+</header>
+<div class="main">
+  <div class="modes">
+    <button class="mode-btn active" onclick="setMode('pomodoro')">Focus 25</button>
+    <button class="mode-btn" onclick="setMode('short')">Break 5</button>
+    <button class="mode-btn" onclick="setMode('long')">Break 15</button>
+  </div>
+  <div class="timer-card" id="timerCard">
+    <div class="ring-container">
+      <svg class="ring-svg" viewBox="0 0 220 220">
+        <circle class="ring-bg" cx="110" cy="110" r="100"/>
+        <circle class="ring-progress" id="ringProgress" cx="110" cy="110" r="100"/>
+      </svg>
+      <div class="ring-center">
+        <div class="time-display" id="timeDisplay">25:00</div>
+        <div class="session-label" id="sessionLabel">FOCUS SESSION</div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="btn btn-secondary" onclick="resetTimer()">Reset</button>
+      <button class="btn btn-primary" id="startBtn" onclick="toggleTimer()">Start</button>
+    </div>
+    <div class="sessions" id="sessionDots">
+      <div class="session-dot" id="dot0"></div>
+      <div class="session-dot" id="dot1"></div>
+      <div class="session-dot" id="dot2"></div>
+      <div class="session-dot" id="dot3"></div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-value" id="statSessions">0</div>
+      <div class="stat-label">Sessions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statMinutes">0</div>
+      <div class="stat-label">Minutes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statTasks">0</div>
+      <div class="stat-label">Tasks Done</div>
+    </div>
+  </div>
+  <div class="tasks-card">
+    <div class="tasks-header">
+      <span class="tasks-title">Task List</span>
+      <span class="tasks-count" id="tasksCount">0 tasks</span>
+    </div>
+    <div class="task-input-row">
+      <input class="task-input" id="taskInput" type="text" placeholder="Add a task..." maxlength="80"
+        onkeydown="if(event.key==='Enter') addTask()">
+      <button class="btn-add" onclick="addTask()">+</button>
+    </div>
+    <div class="task-list" id="taskList">
+      <div class="empty-tasks" id="emptyMsg">No tasks yet — add one above</div>
+    </div>
+  </div>
+</div>
+<footer>
+  <a href="../index.html">WorldClock.live</a> — Free Productivity Tools
+</footer>
+<div class="notif" id="notif"></div>
+<script>
+  const MODES = {
+    pomodoro: { duration: 25 * 60, label: 'FOCUS SESSION', btnClass: 'btn-primary' },
+    short:    { duration:  5 * 60, label: 'SHORT BREAK',   btnClass: 'btn-primary break-mode' },
+    long:     { duration: 15 * 60, label: 'LONG BREAK',    btnClass: 'btn-primary break-mode' }
+  };
+  let currentMode = 'pomodoro';
+  let timeLeft = MODES.pomodoro.duration;
+  let totalTime = MODES.pomodoro.duration;
+  let running = false;
+  let interval = null;
+  let sessionsCompleted = 0;
+  let totalMinutes = 0;
+  let tasksDone = 0;
+  let tasks = [];
+  const circumference = 2 * Math.PI * 100;
+  const timeDisplay  = document.getElementById('timeDisplay');
+  const sessionLabel = document.getElementById('sessionLabel');
+  const startBtn     = document.getElementById('startBtn');
+  const ringProgress = document.getElementById('ringProgress');
+  const timerCard    = document.getElementById('timerCard');
+  const notif        = document.getElementById('notif');
+  const taskInput    = document.getElementById('taskInput');
+  const taskList     = document.getElementById('taskList');
+  const tasksCountEl = document.getElementById('tasksCount');
+  const statSessions = document.getElementById('statSessions');
+  const statMinutes  = document.getElementById('statMinutes');
+  const statTasks    = document.getElementById('statTasks');
+  function setMode(mode) {
+    clearInterval(interval); running = false;
+    currentMode = mode;
+    timeLeft = MODES[mode].duration;
+    totalTime = MODES[mode].duration;
+    startBtn.textContent = 'Start';
+    startBtn.className = 'btn ' + MODES[mode].btnClass;
+    sessionLabel.textContent = MODES[mode].label;
+    timerCard.classList.remove('running');
+    updateDisplay(); updateRing();
+    document.querySelectorAll('.mode-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', ['pomodoro','short','long'][i] === mode);
+    });
+    if (mode === 'pomodoro') ringProgress.classList.remove('break');
+    else ringProgress.classList.add('break');
+  }
+  function toggleTimer() {
+    if (running) {
+      clearInterval(interval); running = false;
+      startBtn.textContent = 'Resume';
+      timerCard.classList.remove('running');
+    } else {
+      running = true; startBtn.textContent = 'Pause';
+      timerCard.classList.add('running');
+      interval = setInterval(tick, 1000);
+    }
+  }
+  function tick() {
+    timeLeft--; updateDisplay(); updateRing();
+    if (timeLeft <= 0) {
+      clearInterval(interval); running = false;
+      timerCard.classList.remove('running');
+      onComplete();
+    }
+  }
+  function onComplete() {
+    playBeep();
+    if (currentMode === 'pomodoro') {
+      sessionsCompleted++; totalMinutes += 25;
+      statSessions.textContent = sessionsCompleted;
+      statMinutes.textContent = totalMinutes;
+      updateDots();
+      showNotif('🍅 Focus session complete! Time for a break.', false);
+    } else {
+      showNotif('⚡ Break over! Ready to focus?', true);
+    }
+    startBtn.textContent = 'Start';
+    timeLeft = totalTime; updateDisplay(); updateRing();
+  }
+  function resetTimer() {
+    clearInterval(interval); running = false;
+    timeLeft = totalTime; startBtn.textContent = 'Start';
+    timerCard.classList.remove('running');
+    updateDisplay(); updateRing();
+  }
+  function updateDisplay() {
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
+    timeDisplay.textContent = m + ':' + s;
+  }
+  function updateRing() {
+    const offset = circumference * (1 - timeLeft / totalTime);
+    ringProgress.style.strokeDashoffset = offset;
+  }
+  function updateDots() {
+    for (let i = 0; i < 4; i++) {
+      document.getElementById('dot' + i).classList.toggle('done', i < (sessionsCompleted % 4));
+    }
+  }
+  function playBeep() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      [0, 0.3, 0.6].forEach(delay => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = 880; o.type = 'sine';
+        g.gain.setValueAtTime(0.3, ctx.currentTime + delay);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.3);
+        o.start(ctx.currentTime + delay);
+        o.stop(ctx.currentTime + delay + 0.3);
+      });
+    } catch(e) {}
+  }
+  function showNotif(msg, isBreak) {
+    notif.textContent = msg;
+    notif.className = 'notif' + (isBreak ? ' break-notif' : '') + ' show';
+    setTimeout(() => notif.classList.remove('show'), 4000);
+  }
+  function addTask() {
+    const text = taskInput.value.trim();
+    if (!text) return;
+    tasks.push({ id: Date.now(), text, done: false });
+    taskInput.value = '';
+    renderTasks();
+  }
+  function toggleTask(id) {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+    task.done = !task.done;
+    if (task.done) { tasksDone++; statTasks.textContent = tasksDone; }
+    else if (tasksDone > 0) { tasksDone--; statTasks.textContent = tasksDone; }
+    renderTasks();
+  }
+  function deleteTask(id) {
+    tasks = tasks.filter(t => t.id !== id);
+    renderTasks();
+  }
+  function renderTasks() {
+    const count = tasks.length;
+    tasksCountEl.textContent = count + ' task' + (count !== 1 ? 's' : '');
+    if (count === 0) {
+      taskList.innerHTML = '<div class="empty-tasks">No tasks yet — add one above</div>';
+      return;
+    }
+    taskList.innerHTML = tasks.map(t => `
+      <div class="task-item ${t.done ? 'done' : ''}">
+        <div class="task-check ${t.done ? 'checked' : ''}" onclick="toggleTask(${t.id})"></div>
+        <span class="task-text">${escapeHtml(t.text)}</span>
+        <button class="task-delete" onclick="deleteTask(${t.id})">×</button>
+      </div>
+    `).join('');
+  }
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  updateDisplay();
+  updateRing();
+</script>
+</body>
+</html>
