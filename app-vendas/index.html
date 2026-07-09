@@ -315,7 +315,10 @@ function renderHistory() {
       ? `<div class="list-row" style="color:${closure.difference === 0 ? '#3B6D11' : (closure.difference > 0 ? '#3B6D11' : '#A32D2D')};"><span>Conferência de caixa</span><span>${closure.difference === 0 ? "Bate certo" : (closure.difference > 0 ? "+" : "") + closure.difference.toLocaleString("pt-PT") + " MT"}</span></div>`
       : `<div class="list-row" style="color:#888780;"><span>Caixa não conferida</span><span></span></div>`;
     return `<p class="section-title" style="margin-top:14px;">${label} — ${total.toLocaleString("pt-PT")} MT (${sales.length} vendas)</p>` +
-      sales.map(s => `<div class="list-row"><span>${s.productName}</span><span class="qty">${s.qty} un · ${s.total.toLocaleString("pt-PT")} MT</span></div>`).join("") +
+      sales.map(s => {
+        const hour = new Date(s.time).toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" });
+        return `<div class="list-row"><span>${hour} · ${s.productName}</span><span class="qty">${s.qty} un · ${s.total.toLocaleString("pt-PT")} MT</span></div>`;
+      }).join("") +
       closureLine;
   }).join("");
 }
