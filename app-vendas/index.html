@@ -239,6 +239,36 @@
   </div>
 </div>
 
+<!-- FOLHA: CORRIGIR VENDA -->
+<div class="sheet-overlay" id="edit-sale-sheet">
+  <div class="sheet">
+    <p class="sheet-title" id="edit-sale-title">Corrigir venda</p>
+
+    <div class="row-2">
+      <div class="field">
+        <label class="field-label">Quantidade</label>
+        <div class="qty-control">
+          <button onclick="editQtyChange(-1)">−</button>
+          <input type="text" id="edit-sale-qty" value="1" inputmode="numeric" oninput="recalcEditTotal()">
+          <button onclick="editQtyChange(1)">+</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Preço unitário</label>
+        <input type="text" id="edit-sale-price" value="0" inputmode="numeric" oninput="recalcEditTotal()">
+      </div>
+    </div>
+
+    <div class="total-box">
+      <span class="t-label">Novo total</span>
+      <span class="t-value" id="edit-sale-total">0 MT</span>
+    </div>
+
+    <button class="primary" onclick="saveEditSale()">✓ Guardar correcção</button>
+    <button class="secondary" style="width:100%; color:#A32D2D; border-color:#E8B4B4;" onclick="deleteEditSale()">🗑 Apagar esta venda</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -343,7 +373,7 @@ function renderHistory() {
     return `<p class="section-title" style="margin-top:14px;">${label} — ${total.toLocaleString("pt-PT")} MT (${sales.length} vendas)</p>` +
       sales.map(s => {
         const hour = new Date(s.time).toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" });
-        return `<div class="list-row"><span>${hour} · ${s.productName}</span><span class="qty">${s.qty} un · ${s.total.toLocaleString("pt-PT")} MT</span></div>`;
+        return `<div class="list-row" style="cursor:pointer;" onclick="openEditSale('${s.id}')"><span>${hour} · ${s.productName}</span><span class="qty">${s.qty} un · ${s.total.toLocaleString("pt-PT")} MT</span></div>`;
       }).join("") +
       closureLine;
   }).join("");
@@ -437,6 +467,74 @@ function confirmSale() {
   goTo("home");
 }
 
+let editingSaleId = null;
+
+function openEditSale(id) {
+  const sale = state.sales.find(s => s.id === id);
+  if (!sale) return;
+  editingSaleId = id;
+  document.getElementById("edit-sale-title").textContent = sale.productName;
+  document.getElementById("edit-sale-qty").value = sale.qty;
+  document.getElementById("edit-sale-price").value = sale.price;
+  recalcEditTotal();
+  document.getElementById("edit-sale-sheet").classList.add("active");
+}
+
+function closeEditSale() {
+  document.getElementById("edit-sale-sheet").classList.remove("active");
+  editingSaleId = null;
+}
+
+function editQtyChange(delta) {
+  const input = document.getElementById("edit-sale-qty");
+  let val = parseInt(input.value) || 1;
+  val = Math.max(1, val + delta);
+  input.value = val;
+  recalcEditTotal();
+}
+
+function recalcEditTotal() {
+  const qty = parseFloat(document.getElementById("edit-sale-qty").value) || 0;
+  const price = parseFloat(document.getElementById("edit-sale-price").value) || 0;
+  document.getElementById("edit-sale-total").textContent = (qty * price).toLocaleString("pt-PT") + " MT";
+}
+
+function reopenClosureIfNeeded(date) {
+  if (state.closures[date]) {
+    delete state.closures[date];
+    showToast("A conferência desse dia foi reiniciada, por causa da correcção");
+  }
+}
+
+function saveEditSale() {
+  const sale = state.sales.find(s => s.id === editingSaleId);
+  if (!sale) return;
+  const qty = parseFloat(document.getElementById("edit-sale-qty").value) || 0;
+  const price = parseFloat(document.getElementById("edit-sale-price").value) || 0;
+  if (qty <= 0 || price <= 0) { showToast("Verifique a quantidade e o preço"); return; }
+  sale.qty = qty;
+  sale.price = price;
+  sale.total = qty * price;
+  reopenClosureIfNeeded(sale.date);
+  saveState();
+  closeEditSale();
+  showToast("Venda corrigida");
+  renderHistory();
+  renderHome();
+}
+
+function deleteEditSale() {
+  const sale = state.sales.find(s => s.id === editingSaleId);
+  if (!sale) return;
+  state.sales = state.sales.filter(s => s.id !== editingSaleId);
+  reopenClosureIfNeeded(sale.date);
+  saveState();
+  closeEditSale();
+  showToast("Venda apagada");
+  renderHistory();
+  renderHome();
+}
+
 function todaySystemTotal() {
   return state.sales.filter(s => s.date === todayKey()).reduce((s,v) => s + v.total, 0);
 }
@@ -447,95 +545,4 @@ function monthSummary() {
   const thisMonth = monthKey();
   const monthSales = state.sales.filter(s => s.date.startsWith(thisMonth));
   const total = monthSales.reduce((s,v) => s + v.total, 0);
-  const days = new Set(monthSales.map(s => s.date)).size;
-  return { total, days };
-}
-
-function monthLabel() {
-  return new Date(todayKey() + "T00:00:00").toLocaleDateString("pt-PT", { month: "long" });
-}
-
-function openCloseSheet() {
-  const todaySales = state.sales.filter(s => s.date === todayKey());
-  if (todaySales.length === 0) { showToast("Ainda não há vendas hoje"); return; }
-
-  const closure = state.closures[todayKey()];
-  document.getElementById("close-sheet").classList.add("active");
-
-  if (closure) {
-    showCloseResult(closure.systemTotal, closure.cashCounted, closure.difference);
-  } else {
-    document.getElementById("close-form").style.display = "block";
-    document.getElementById("close-result").style.display = "none";
-    document.getElementById("close-system-total").textContent = todaySystemTotal().toLocaleString("pt-PT") + " MT";
-    document.getElementById("close-cash-input").value = "";
-    document.getElementById("close-cash-input").focus();
-  }
-}
-
-function closeCloseSheet() {
-  document.getElementById("close-sheet").classList.remove("active");
-}
-
-function confirmCloseDay() {
-  const cash = parseFloat(document.getElementById("close-cash-input").value);
-  if (isNaN(cash) || cash < 0) { showToast("Escreva o valor em dinheiro que tem na mão"); return; }
-  const systemTotal = todaySystemTotal();
-  const difference = cash - systemTotal;
-
-  state.closures[todayKey()] = {
-    systemTotal, cashCounted: cash, difference, closedAt: new Date().toISOString()
-  };
-  saveState();
-  showCloseResult(systemTotal, cash, difference);
-  renderHome();
-}
-
-function showCloseResult(systemTotal, cash, difference) {
-  document.getElementById("close-form").style.display = "none";
-  document.getElementById("close-result").style.display = "block";
-  document.getElementById("result-system").textContent = systemTotal.toLocaleString("pt-PT") + " MT";
-  document.getElementById("result-cash").textContent = cash.toLocaleString("pt-PT") + " MT";
-
-  const diffEl = document.getElementById("result-diff");
-  const noteEl = document.getElementById("result-note");
-  if (difference === 0) {
-    diffEl.textContent = "Bate certo";
-    diffEl.className = "diff-ok";
-    noteEl.textContent = "ⓘ O dinheiro contado é igual ao que o sistema registou.";
-  } else if (difference > 0) {
-    diffEl.textContent = "+" + difference.toLocaleString("pt-PT") + " MT";
-    diffEl.className = "diff-ok";
-    noteEl.textContent = "ⓘ Tem mais dinheiro do que o registado. Pode ter esquecido de registar alguma venda.";
-  } else {
-    diffEl.textContent = difference.toLocaleString("pt-PT") + " MT";
-    diffEl.className = "diff-bad";
-    noteEl.textContent = "ⓘ Falta dinheiro em relação ao que foi registado. Vale a pena verificar o que aconteceu.";
-  }
-}
-
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2000);
-}
-
-document.getElementById("products-sheet").addEventListener("click", function(e) {
-  if (e.target === this) closeProductsSheet();
-});
-document.getElementById("close-sheet").addEventListener("click", function(e) {
-  if (e.target === this) closeCloseSheet();
-});
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js").catch(()=>{});
-  });
-}
-
-loadState();
-renderHome();
-</script>
-</body>
-</html>
+  const days = new Set(monthSales.m
