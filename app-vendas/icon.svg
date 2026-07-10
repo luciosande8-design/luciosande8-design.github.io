@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#12836A"/>
+      <stop offset="100%" stop-color="#0B5A48"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="200" height="200" rx="42" fill="url(#bg)"/>
+
+  <!-- três barras de venda, a crescer -->
+  <rect x="52" y="112" width="22" height="46" rx="5" fill="#F1EFE8"/>
+  <rect x="89" y="90" width="22" height="68" rx="5" fill="#F1EFE8"/>
+  <rect x="126" y="66" width="22" height="92" rx="5" fill="#F1EFE8"/>
+
+  <!-- pequeno círculo de confirmação, ligando à conferência de caixa -->
+  <circle cx="146" cy="52" r="22" fill="#F1EFE8"/>
+  <path d="M137 52 L144 59 L157 44" stroke="#0B5A48" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
