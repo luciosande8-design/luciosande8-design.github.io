@@ -30,6 +30,13 @@
   .summary-card .label { font-size: 13px; color: #04342C; }
   .summary-card .value { font-size: 30px; font-weight: 700; color: #04342C; margin: 4px 0; }
   .summary-card .note { font-size: 12px; color: #085041; }
+  .month-strip { display:flex; justify-content:space-between; align-items:center; padding: 10px 4px; margin-bottom: 1rem; border-bottom: 1px solid #E2E0D8; }
+  .month-strip .m-label { font-size: 13px; color: #5F5E5A; }
+  .month-strip .m-value { font-size: 15px; font-weight: 600; color: #2C2C2A; }
+  .month-header { background: #F1EFE8; border: 1px solid #D3D1C7; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1rem; }
+  .month-header .mh-label { font-size: 12px; color: #5F5E5A; margin-bottom:2px; }
+  .month-header .mh-value { font-size: 20px; font-weight: 700; color: #2C2C2A; }
+  .month-header .mh-note { font-size: 11px; color: #888780; margin-top:2px; }
 
   button.primary {
     width: 100%; background: #2C2C2A; color: #fff; border: none; border-radius: 10px;
@@ -114,6 +121,11 @@
       <p class="note" id="home-count">0 vendas registadas</p>
     </div>
 
+    <div class="month-strip">
+      <span class="m-label" id="month-strip-label">Total do mês</span>
+      <span class="m-value" id="month-strip-value">0 MT</span>
+    </div>
+
     <button class="primary" onclick="goTo('sale')">＋ Registar venda</button>
 
     <div class="grid-2">
@@ -171,6 +183,11 @@
     <div class="topbar">
       <button class="back" onclick="goTo('home')">←</button>
       <h1>Histórico</h1>
+    </div>
+    <div class="month-header">
+      <p class="mh-label" id="month-header-label">Total acumulado este mês</p>
+      <p class="mh-value" id="month-header-value">0 MT</p>
+      <p class="mh-note" id="month-header-note">0 dias com vendas</p>
     </div>
     <div id="history-list"></div>
   </section>
@@ -292,9 +309,18 @@ function renderHome() {
   } else {
     btn.textContent = "Fechar caixa do dia";
   }
+
+  const m = monthSummary();
+  document.getElementById("month-strip-label").textContent = "Total de " + monthLabel();
+  document.getElementById("month-strip-value").textContent = m.total.toLocaleString("pt-PT") + " MT";
 }
 
 function renderHistory() {
+  const m = monthSummary();
+  document.getElementById("month-header-label").textContent = "Total acumulado em " + monthLabel();
+  document.getElementById("month-header-value").textContent = m.total.toLocaleString("pt-PT") + " MT";
+  document.getElementById("month-header-note").textContent = m.days + (m.days === 1 ? " dia com vendas" : " dias com vendas");
+
   const container = document.getElementById("history-list");
   const byDate = {};
   state.sales.forEach(s => {
@@ -415,6 +441,20 @@ function todaySystemTotal() {
   return state.sales.filter(s => s.date === todayKey()).reduce((s,v) => s + v.total, 0);
 }
 
+function monthKey() { return todayKey().slice(0,7); }
+
+function monthSummary() {
+  const thisMonth = monthKey();
+  const monthSales = state.sales.filter(s => s.date.startsWith(thisMonth));
+  const total = monthSales.reduce((s,v) => s + v.total, 0);
+  const days = new Set(monthSales.map(s => s.date)).size;
+  return { total, days };
+}
+
+function monthLabel() {
+  return new Date(todayKey() + "T00:00:00").toLocaleDateString("pt-PT", { month: "long" });
+}
+
 function openCloseSheet() {
   const todaySales = state.sales.filter(s => s.date === todayKey());
   if (todaySales.length === 0) { showToast("Ainda não há vendas hoje"); return; }
@@ -439,63 +479,4 @@ function closeCloseSheet() {
 
 function confirmCloseDay() {
   const cash = parseFloat(document.getElementById("close-cash-input").value);
-  if (isNaN(cash) || cash < 0) { showToast("Escreva o valor em dinheiro que tem na mão"); return; }
-  const systemTotal = todaySystemTotal();
-  const difference = cash - systemTotal;
-
-  state.closures[todayKey()] = {
-    systemTotal, cashCounted: cash, difference, closedAt: new Date().toISOString()
-  };
-  saveState();
-  showCloseResult(systemTotal, cash, difference);
-  renderHome();
-}
-
-function showCloseResult(systemTotal, cash, difference) {
-  document.getElementById("close-form").style.display = "none";
-  document.getElementById("close-result").style.display = "block";
-  document.getElementById("result-system").textContent = systemTotal.toLocaleString("pt-PT") + " MT";
-  document.getElementById("result-cash").textContent = cash.toLocaleString("pt-PT") + " MT";
-
-  const diffEl = document.getElementById("result-diff");
-  const noteEl = document.getElementById("result-note");
-  if (difference === 0) {
-    diffEl.textContent = "Bate certo";
-    diffEl.className = "diff-ok";
-    noteEl.textContent = "ⓘ O dinheiro contado é igual ao que o sistema registou.";
-  } else if (difference > 0) {
-    diffEl.textContent = "+" + difference.toLocaleString("pt-PT") + " MT";
-    diffEl.className = "diff-ok";
-    noteEl.textContent = "ⓘ Tem mais dinheiro do que o registado. Pode ter esquecido de registar alguma venda.";
-  } else {
-    diffEl.textContent = difference.toLocaleString("pt-PT") + " MT";
-    diffEl.className = "diff-bad";
-    noteEl.textContent = "ⓘ Falta dinheiro em relação ao que foi registado. Vale a pena verificar o que aconteceu.";
-  }
-}
-
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2000);
-}
-
-document.getElementById("products-sheet").addEventListener("click", function(e) {
-  if (e.target === this) closeProductsSheet();
-});
-document.getElementById("close-sheet").addEventListener("click", function(e) {
-  if (e.target === this) closeCloseSheet();
-});
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js").catch(()=>{});
-  });
-}
-
-loadState();
-renderHome();
-</script>
-</body>
-</html>
+  if (isNaN(cash) || cash < 0) { showToast("Escreva o valor em dinheiro que tem na m
