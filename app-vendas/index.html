@@ -479,4 +479,63 @@ function closeCloseSheet() {
 
 function confirmCloseDay() {
   const cash = parseFloat(document.getElementById("close-cash-input").value);
-  if (isNaN(cash) || cash < 0) { showToast("Escreva o valor em dinheiro que tem na m
+  if (isNaN(cash) || cash < 0) { showToast("Escreva o valor em dinheiro que tem na mão"); return; }
+  const systemTotal = todaySystemTotal();
+  const difference = cash - systemTotal;
+
+  state.closures[todayKey()] = {
+    systemTotal, cashCounted: cash, difference, closedAt: new Date().toISOString()
+  };
+  saveState();
+  showCloseResult(systemTotal, cash, difference);
+  renderHome();
+}
+
+function showCloseResult(systemTotal, cash, difference) {
+  document.getElementById("close-form").style.display = "none";
+  document.getElementById("close-result").style.display = "block";
+  document.getElementById("result-system").textContent = systemTotal.toLocaleString("pt-PT") + " MT";
+  document.getElementById("result-cash").textContent = cash.toLocaleString("pt-PT") + " MT";
+
+  const diffEl = document.getElementById("result-diff");
+  const noteEl = document.getElementById("result-note");
+  if (difference === 0) {
+    diffEl.textContent = "Bate certo";
+    diffEl.className = "diff-ok";
+    noteEl.textContent = "ⓘ O dinheiro contado é igual ao que o sistema registou.";
+  } else if (difference > 0) {
+    diffEl.textContent = "+" + difference.toLocaleString("pt-PT") + " MT";
+    diffEl.className = "diff-ok";
+    noteEl.textContent = "ⓘ Tem mais dinheiro do que o registado. Pode ter esquecido de registar alguma venda.";
+  } else {
+    diffEl.textContent = difference.toLocaleString("pt-PT") + " MT";
+    diffEl.className = "diff-bad";
+    noteEl.textContent = "ⓘ Falta dinheiro em relação ao que foi registado. Vale a pena verificar o que aconteceu.";
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2000);
+}
+
+document.getElementById("products-sheet").addEventListener("click", function(e) {
+  if (e.target === this) closeProductsSheet();
+});
+document.getElementById("close-sheet").addEventListener("click", function(e) {
+  if (e.target === this) closeCloseSheet();
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").catch(()=>{});
+  });
+}
+
+loadState();
+renderHome();
+</script>
+</body>
+</html>
