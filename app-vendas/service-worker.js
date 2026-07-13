@@ -1,4 +1,4 @@
-const CACHE_NAME = "controlo-vendas-v2";
+const CACHE_NAME = "controlo-vendas-v3";
 const FILES_TO_CACHE = [
   "./index.html",
   "./manifest.json",
