@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Controlo de Vendas</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<meta name="theme-color" content="#0F6E56">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #F1EFE8;
+    color: #2C2C2A;
+    -webkit-user-select: none; user-select: none;
+  }
+  #app { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #F1EFE8; padding-bottom: 24px; }
+  .screen { display: none; padding: 1rem; padding-top: calc(1rem + env(safe-area-inset-top)); }
+  .screen.active { display: block; }
+
+  .topbar { display:flex; align-items:center; gap:10px; margin-bottom: 1.25rem; }
+  .topbar .back { font-size: 22px; color:#5F5E5A; background:none; border:none; padding: 4px; }
+  .topbar h1 { font-size: 17px; font-weight: 600; }
+  .store-row { display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem; }
+  .store-row p.sub { font-size: 13px; color: #5F5E5A; }
+  .store-row p.title { font-size: 15px; font-weight: 600; }
+
+  .summary-card { background: #E1F5EE; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+  .summary-card .label { font-size: 13px; color: #04342C; }
+  .summary-card .value { font-size: 30px; font-weight: 700; color: #04342C; margin: 4px 0; }
+  .summary-card .note { font-size: 12px; color: #085041; }
+  .month-strip { display:flex; justify-content:space-between; align-items:center; padding: 10px 4px; margin-bottom: 1rem; border-bottom: 1px solid #E2E0D8; }
+  .month-strip .m-label { font-size: 13px; color: #5F5E5A; }
+  .month-strip .m-value { font-size: 15px; font-weight: 600; color: #2C2C2A; }
+  .month-header { background: #F1EFE8; border: 1px solid #D3D1C7; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1rem; }
+  .month-header .mh-label { font-size: 12px; color: #5F5E5A; margin-bottom:2px; }
+  .month-header .mh-value { font-size: 20px; font-weight: 700; color: #2C2C2A; }
+  .month-header .mh-note { font-size: 11px; color: #888780; margin-top:2px; }
+
+  button.primary {
+    width: 100%; background: #2C2C2A; color: #fff; border: none; border-radius: 10px;
+    padding: 15px; font-size: 15px; font-weight: 600; display:flex; align-items:center;
+    justify-content:center; gap: 8px; margin-bottom: 12px;
+  }
+  button.primary:active { opacity: 0.8; }
+  button.secondary {
+    background: #fff; border: 1px solid #D3D1C7; border-radius: 10px; padding: 12px;
+    font-size: 13px; font-weight: 500; display:flex; flex-direction:column; align-items:center; gap: 6px; color:#2C2C2A;
+  }
+  .grid-2 { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+
+  .section-title { font-size: 13px; color: #5F5E5A; margin: 0 0 8px; }
+  .list-row { display:flex; justify-content:space-between; align-items:center; padding: 10px 0; border-bottom: 1px solid #E2E0D8; font-size: 14px; }
+  .list-row:last-child { border-bottom: none; }
+  .list-row .qty { color: #5F5E5A; font-size: 13px; }
+
+  label.field-label { display:block; font-size: 13px; color:#5F5E5A; margin-bottom: 6px; }
+  input[type=text], input[type=number] {
+    width: 100%; padding: 11px 12px; border: 1px solid #D3D1C7; border-radius: 10px; font-size: 15px;
+    background: #fff; color: #2C2C2A;
+  }
+  input:focus { outline: 2px solid #0F6E56; outline-offset: -1px; }
+  .field { margin-bottom: 1rem; }
+  .row-2 { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .qty-control { display:flex; align-items:center; border:1px solid #D3D1C7; border-radius:10px; overflow:hidden; background:#fff; }
+  .qty-control button { border:none; background:none; width: 40px; font-size: 18px; padding: 10px 0; color:#2C2C2A; }
+  .qty-control input { border:none; text-align:center; padding: 10px 0; }
+
+  .hint { font-size: 12px; color: #888780; margin: -6px 0 1rem; display:flex; align-items:center; gap:6px; }
+
+  .total-box { background:#E1F5EE; border-radius:10px; padding: 1rem; margin-bottom: 1.25rem; display:flex; justify-content:space-between; align-items:center; }
+  .total-box .t-label { font-size: 14px; color:#04342C; }
+  .total-box .t-value { font-size: 22px; font-weight:700; color:#04342C; }
+
+  .empty-box { border: 1px solid #D3D1C7; border-radius: 10px; padding: 12px; font-size: 13px; color: #888780; display:flex; align-items:center; gap: 8px; margin-bottom: 12px; }
+  .add-new-box { border: 1px solid #D3D1C7; border-radius: 10px; padding: 12px; background: #fff; margin-bottom: 1rem; }
+  .add-new-box .add-title { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+
+  .product-pick { width: 100%; padding: 11px 12px; border: 1px solid #D3D1C7; border-radius: 10px; background: #fff; text-align:left; font-size: 15px; display:flex; justify-content:space-between; align-items:center; }
+  .product-pick .arrow { color:#888780; }
+
+  .sheet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display:none; align-items:flex-end; justify-content:center; z-index: 50; }
+  .sheet-overlay.active { display:flex; }
+  .sheet { background:#fff; width:100%; max-width:480px; border-radius: 16px 16px 0 0; padding: 1rem; max-height: 70vh; overflow-y: auto; padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
+  .sheet .sheet-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+  .sheet .search-box { position:relative; margin-bottom: 10px; }
+  .sheet .search-box input { padding-left: 34px; }
+  .product-item { padding: 12px 4px; border-bottom: 1px solid #E2E0D8; font-size: 15px; display:flex; justify-content:space-between; align-items:center; }
+  .product-item .p-price { color:#5F5E5A; font-size:13px; }
+  .product-item .p-right { display:flex; align-items:center; gap:10px; }
+  .p-edit-icon { font-size:16px; color:#888780; padding:4px; }
+
+  .welcome-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; z-index: 60; padding: 20px; }
+  .welcome-overlay.active { display:flex; }
+  .welcome-card { background:#fff; border-radius: 16px; padding: 1.5rem 1.25rem; max-width: 340px; width:100%; }
+  .welcome-card h2 { font-size: 18px; margin-bottom: 4px; }
+  .welcome-card .w-sub { font-size: 13px; color:#5F5E5A; margin-bottom: 1.25rem; }
+  .welcome-step { display:flex; gap: 12px; margin-bottom: 1rem; align-items:flex-start; }
+  .welcome-step .w-icon { font-size: 22px; line-height:1; }
+  .welcome-step .w-text { font-size: 14px; line-height:1.4; }
+  .welcome-step .w-text b { display:block; margin-bottom:2px; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background:#2C2C2A; color:#fff;
+    padding: 10px 18px; border-radius: 30px; font-size: 13px; z-index: 100; opacity:0; transition: opacity .25s; pointer-events:none; }
+  .toast.show { opacity: 1; }
+
+  .empty-state { text-align:center; padding: 2rem 1rem; color:#888780; }
+
+  .closed-badge { display:flex; align-items:center; justify-content:center; gap:6px; width:100%; padding:12px; font-size:13px; color:#5F5E5A; }
+  .reconcile-row { display:flex; justify-content:space-between; padding: 10px 0; font-size: 14px; border-bottom: 1px solid #E2E0D8; }
+  .reconcile-row.total { font-weight:700; border-bottom:none; padding-top:12px; }
+  .diff-ok { color:#3B6D11; }
+  .diff-bad { color:#A32D2D; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ECRÃ: RESUMO DO DIA -->
+  <section id="screen-home" class="screen active">
+    <div class="store-row">
+      <div>
+        <p class="sub" id="home-date">Hoje</p>
+        <p class="title" id="home-store">Minha Loja</p>
+      </div>
+    </div>
+    <p class="hint" id="license-notice" style="margin-top:-8px; margin-bottom:1rem;"></p>
+
+    <div class="summary-card">
+      <p class="label">Total vendido hoje</p>
+      <p class="value" id="home-total">0 MT</p>
+      <p class="note" id="home-count">0 vendas registadas</p>
+    </div>
+
+    <div class="month-strip">
+      <span class="m-label" id="month-strip-label">Total do mês</span>
+      <span class="m-value" id="month-strip-value">0 MT</span>
+    </div>
+
+    <button class="primary" onclick="goTo('sale')">＋ Registar venda</button>
+
+    <div class="grid-2">
+      <button class="secondary" onclick="openProductsSheet('browse')">Produtos</button>
+      <button class="secondary" onclick="goTo('history')">Histórico</button>
+    </div>
+
+    <p class="section-title">Mais vendido hoje</p>
+    <div id="home-top-products"></div>
+
+    <button class="secondary" id="close-day-btn" style="width:100%; margin-top: 12px;" onclick="openCloseSheet()">Fechar caixa do dia</button>
+    <button class="secondary" style="width:100%; margin-top: 10px;" onclick="openEntrySheet()">📦 Registar entrada de stock</button>
+    <button class="secondary" id="backup-btn" style="width:100%; margin-top: 10px; color:#5F5E5A;" onclick="openBackupSheet()">🔒 Cópia de segurança</button>
+  </section>
+
+  <!-- ECRÃ: REGISTAR VENDA -->
+  <section id="screen-sale" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="goTo('home')">←</button>
+      <h1>Registar venda</h1>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Produto</label>
+      <button class="product-pick" onclick="openProductsSheet('sale')">
+        <span id="sale-product-name">Escolher produto</span>
+        <span class="arrow">▾</span>
+      </button>
+    </div>
+
+    <div class="row-2">
+      <div class="field">
+        <label class="field-label" id="sale-qty-label">Quantidade</label>
+        <div class="qty-control">
+          <button onclick="changeQty(-1)">−</button>
+          <input type="text" id="sale-qty" value="1" inputmode="numeric" oninput="recalcTotal()">
+          <button onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label" id="sale-price-label">Preço unitário</label>
+        <input type="text" id="sale-price" value="0" inputmode="numeric" oninput="recalcTotal()">
+      </div>
+    </div>
+    <p class="hint">ⓘ Preço vem do produto, mas pode ajustar aqui</p>
+
+    <div class="total-box">
+      <span class="t-label">Total da venda</span>
+      <span class="t-value" id="sale-total">0 MT</span>
+    </div>
+
+    <button class="primary" onclick="confirmSale()">✓ Confirmar venda</button>
+  </section>
+
+  <!-- ECRÃ: HISTÓRICO -->
+  <section id="screen-history" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="goTo('home')">←</button>
+      <h1>Histórico</h1>
+    </div>
+    <div class="month-header">
+      <p class="mh-label" id="month-header-label">Total acumulado este mês</p>
+      <p class="mh-value" id="month-header-value">0 MT</p>
+      <p class="mh-note" id="month-header-note">0 dias com vendas</p>
+    </div>
+    <div id="history-list"></div>
+  </section>
+
+</div>
+
+<!-- FOLHA: ESCOLHER / ADICIONAR PRODUTO -->
+<div class="sheet-overlay" id="products-sheet">
+  <div class="sheet">
+    <p class="sheet-title">Escolher produto</p>
+    <div class="search-box">
+      <input type="text" id="product-search" placeholder="Procurar ou escrever novo produto" oninput="filterProducts()">
+    </div>
+    <div id="product-list"></div>
+
+    <div class="add-new-box" id="add-new-box" style="display:none;">
+      <p class="add-title">＋ Adicionar "<span id="new-product-name"></span>" como novo produto</p>
+      <div class="row-2">
+        <div class="field" style="margin-bottom:10px;">
+          <label class="field-label">Preço de venda</label>
+          <input type="text" id="new-product-price" placeholder="Ex: 40" inputmode="numeric">
+        </div>
+        <div class="field" style="margin-bottom:10px;">
+          <label class="field-label">Vende-se por</label>
+          <select id="new-product-unit" style="width:100%; padding:11px 12px; border:1px solid #D3D1C7; border-radius:10px; font-size:15px; background:#fff;">
+            <option value="un">Unidade</option>
+            <option value="kg">Kg</option>
+            <option value="l">Litro</option>
+            <option value="pacote">Pacote</option>
+            <option value="caixa">Caixa</option>
+          </select>
+        </div>
+      </div>
+      <p class="hint" style="margin-top:-6px;">ⓘ O preço de compra define-se depois, em "Registar entrada de stock"</p>
+      <button class="primary" style="margin-bottom:0;" onclick="addNewProduct()">Adicionar e continuar</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOLHA: FECHAR CAIXA -->
+<div class="sheet-overlay" id="close-sheet">
+  <div class="sheet">
+    <p class="sheet-title" id="close-sheet-title">Fechar caixa do dia</p>
+
+    <div id="close-form">
+      <div class="total-box" style="margin-bottom: 1rem;">
+        <span class="t-label">Total registado no sistema</span>
+        <span class="t-value" id="close-system-total">0 MT</span>
+      </div>
+      <div class="summary-card" style="margin-bottom: 1rem;">
+        <p class="label">Lucro do dia</p>
+        <p class="value" id="close-profit-total" style="font-size:24px;">0 MT</p>
+      </div>
+      <div class="field">
+        <label class="field-label">Quanto dinheiro tem na mão agora?</label>
+        <input type="text" id="close-cash-input" placeholder="Ex: 5800" inputmode="numeric">
+      </div>
+      <button class="primary" style="margin-bottom:0;" onclick="confirmCloseDay()">Confirmar fecho</button>
+    </div>
+
+    <div id="close-result" style="display:none;">
+      <div class="reconcile-row"><span>Lucro do dia</span><span id="result-profit">0 MT</span></div>
+      <div class="reconcile-row"><span>Total registado no sistema</span><span id="result-system">0 MT</span></div>
+      <div class="reconcile-row"><span>Dinheiro contado na mão</span><span id="result-cash">0 MT</span></div>
+      <div class="reconcile-row total"><span id="result-label">Diferença</span><span id="result-diff">0 MT</span></div>
+      <p class="hint" id="result-note" style="margin-top:10px;"></p>
+      <button class="primary" style="margin-top:1rem; margin-bottom:0;" onclick="closeCloseSheet()">Fechado</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOLHA: CORRIGIR VENDA -->
+<div class="sheet-overlay" id="edit-sale-sheet">
+  <div class="sheet">
+    <p class="sheet-title" id="edit-sale-title">Corrigir venda</p>
+
+    <div class="row-2">
+      <div class="field">
+        <label class="field-label">Quantidade</label>
+        <div class="qty-control">
+          <button onclick="editQtyChange(-1)">−</button>
+          <input type="text" id="edit-sale-qty" value="1" inputmode="numeric" oninput="recalcEditTotal()">
+          <button onclick="editQtyChange(1)">+</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Preço unitário</label>
+        <input type="text" id="edit-sale-price" value="0" inputmode="numeric" oninput="recalcEditTotal()">
+      </div>
+    </div>
+
+    <div class="total-box">
+      <span class="t-label">Novo total</span>
+      <span class="t-value" id="edit-sale-total">0 MT</span>
+    </div>
+
+    <button class="primary" onclick="saveEditSale()">✓ Guardar correcção</button>
+    <button class="secondary" style="width:100%; color:#A32D2D; border-color:#E8B4B4;" onclick="deleteEditSale()">🗑 Apagar esta venda</button>
+  </div>
+</div>
+
+<!-- FOLHA: CÓPIA DE SEGURANÇA -->
+<div class="sheet-overlay" id="backup-sheet">
+  <div class="sheet">
+    <p class="sheet-title">Cópia de segurança</p>
+    <p class="hint" style="margin-bottom:1rem;">ⓘ Guarde este ficheiro fora do telemóvel de vez em quando — por WhatsApp, email ou Drive. Se o telemóvel se perder ou for trocado, este ficheiro devolve todos os seus dados.</p>
+
+    <button class="primary" onclick="exportBackup()">⬇ Guardar cópia agora</button>
+
+    <p class="section-title" style="margin-top:1rem;">Já tem uma cópia guardada?</p>
+    <label class="secondary" style="width:100%; display:flex; justify-content:center; cursor:pointer;">
+      ⬆ Restaurar cópia de segurança
+      <input type="file" id="restore-input" accept="application/json" style="display:none;" onchange="importBackup(event)">
+    </label>
+    <p class="hint" style="margin-top:10px;">⚠ Restaurar substitui os dados actuais deste telemóvel pelos dados do ficheiro.</p>
+  </div>
+</div>
+
+<!-- FOLHA: EDITAR PREÇO DO PRODUTO -->
+<div class="sheet-overlay" id="edit-product-sheet">
+  <div class="sheet">
+    <p class="sheet-title" id="edit-product-title">Ajustar preço de venda</p>
+    <p class="hint" id="edit-product-cost-note" style="margin-top:-4px;">Custo actual: 0 MT (definido na última entrada de stock)</p>
+    <div class="row-2">
+      <div class="field">
+        <label class="field-label">Preço de venda</label>
+        <input type="text" id="edit-product-price" inputmode="numeric" oninput="updateEditMargin()">
+      </div>
+      <div class="field">
+        <label class="field-label">Vende-se por</label>
+        <select id="edit-product-unit" style="width:100%; padding:11px 12px; border:1px solid #D3D1C7; border-radius:10px; font-size:15px; background:#fff;">
+          <option value="un">Unidade</option>
+          <option value="kg">Kg</option>
+          <option value="l">Litro</option>
+          <option value="pacote">Pacote</option>
+          <option value="caixa">Caixa</option>
+        </select>
+      </div>
+    </div>
+    <p class="hint" id="edit-product-margin" style="margin-top:-6px;">Lucro por unidade: 0 MT</p>
+    <button class="primary" onclick="saveEditProduct()">✓ Guardar</button>
+  </div>
+</div>
+
+<!-- BOAS-VINDAS (só na primeira vez) -->
+<div class="welcome-overlay" id="welcome-overlay">
+  <div class="welcome-card">
+    <h2>Bem-vindo ao Controlo de Vendas</h2>
+    <p class="w-sub">Só três coisas para lembrar:</p>
+
+    <div class="welcome-step">
+      <span class="w-icon">➕</span>
+      <span class="w-text"><b>Registar venda</b>Toque neste botão sempre que vender alguma coisa.</span>
+    </div>
+    <div class="welcome-step">
+      <span class="w-icon">🔒</span>
+      <span class="w-text"><b>Fechar caixa do dia</b>No fim do dia, confira se o dinheiro na mão bate com o que foi vendido.</span>
+    </div>
+    <div class="welcome-step">
+      <span class="w-icon">📶</span>
+      <span class="w-text"><b>Funciona sem internet</b>Pode usar em qualquer lugar. Os dados ficam guardados no telemóvel.</span>
+    </div>
+
+    <button class="primary" style="margin-top:0.5rem; margin-bottom:0;" onclick="closeWelcome()">Entendi, vamos começar</button>
+  </div>
+</div>
+
+<!-- BLOQUEIO DE ACESSO (30 dias) -->
+<div class="welcome-overlay" id="license-lock-overlay" style="z-index:999;">
+  <div class="welcome-card">
+    <h2>Acesso expirado</h2>
+    <p class="w-sub">O período de 30 dias terminou. Os seus dados estão guardados em segurança — só precisa de renovar o acesso para continuar a usar.</p>
+
+    <p class="field-label" style="margin-bottom:4px;">Para renovar, pague a mensalidade para:</p>
+    <p style="font-size:14px; font-weight:600; margin-bottom:14px;" id="license-payment-info">e-Mola: 871093328</p>
+
+    <div class="field">
+      <label class="field-label">Código de renovação</label>
+      <input type="text" id="license-code-input" placeholder="Fornecido depois do pagamento">
+    </div>
+    <button class="primary" style="margin-bottom:0;" onclick="tryUnlock()">Desbloquear</button>
+    <p class="hint" id="license-error" style="display:none; color:#A32D2D; margin-top:10px;">ⓘ Código inválido. Confirme com quem lhe deu o acesso.</p>
+  </div>
+</div>
+
+<!-- FOLHA: ENTRADA DE STOCK -->
+<div class="sheet-overlay" id="entry-sheet">
+  <div class="sheet">
+    <p class="sheet-title">Registar entrada de stock</p>
+
+    <div class="field">
+      <label class="field-label">Produto</label>
+      <button class="product-pick" onclick="openProductsSheet('entry')">
+        <span id="entry-product-name">Escolher produto</span>
+        <span class="arrow">▾</span>
+      </button>
+    </div>
+
+    <label style="display:flex; align-items:center; gap:8px; font-size:14px; margin-bottom:1rem; cursor:pointer;">
+      <input type="checkbox" id="entry-box-mode" onchange="toggleEntryMode()" style="width:18px; height:18px;">
+      Comprei em caixa/pacote (várias unidades juntas)
+    </label>
+
+    <!-- MODO NORMAL: compra directa por unidade -->
+    <div id="entry-mode-unit">
+      <div class="row-2">
+        <div class="field">
+          <label class="field-label">Quantidade comprada</label>
+          <div class="qty-control">
+            <button onclick="entryQtyChange(-1)">−</button>
+            <input type="text" id="entry-qty" value="1" inputmode="numeric" oninput="recalcEntryTotal()">
+            <button onclick="entryQtyChange(1)">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Preço de compra (unitário)</label>
+          <input type="text" id="entry-cost" inputmode="numeric" oninput="recalcEntryTotal()">
+        </div>
+      </div>
+    </div>
+
+    <!-- MODO CAIXA: calcula o custo por unidade automaticamente -->
+    <div id="entry-mode-box" style="display:none;">
+      <div class="row-2">
+        <div class="field">
+          <label class="field-label">Quantas caixas/pacotes comprou</label>
+          <input type="text" id="entry-box-count" value="1" inputmode="numeric" oninput="recalcEntryBox()">
+        </div>
+        <div class="field">
+          <label class="field-label">Unidades por caixa/pacote</label>
+          <input type="text" id="entry-box-units" placeholder="Ex: 150" inputmode="numeric" oninput="recalcEntryBox()">
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Preço pago por cada caixa/pacote</label>
+        <input type="text" id="entry-box-price" placeholder="Ex: 600" inputmode="numeric" oninput="recalcEntryBox()">
+      </div>
+      <div class="summary-card" style="margin-bottom:1rem;">
+        <p class="label">Custo por unidade (calculado)</p>
+        <p class="value" id="entry-box-unit-cost" style="font-size:22px;">0 MT</p>
+        <p class="note" id="entry-box-total-units">0 unidades no total</p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Data da entrada</label>
+      <input type="date" id="entry-date">
+    </div>
+
+    <div class="total-box">
+      <span class="t-label">Total gasto nesta compra</span>
+      <span class="t-value" id="entry-total">0 MT</span>
+    </div>
+
+    <button class="primary" onclick="confirmEntry()">✓ Registar entrada</button>
+
+    <p class="section-title" style="margin-top:1.25rem;">Últimas entradas</p>
+    <div id="entry-history-list"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORE_NAME = "Minha Loja";
+let state = { products: [], sales: [], closures: {}, stockEntries: [] };
+let pickingContext = "sale"; // "sale" ou "entry"
+let selectedProduct = null;
+
+function loadState() {
+  const saved = localStorage.getItem("controlo_vendas_v1");
+  if (saved) {
+    state = JSON.parse(saved);
+    if (!state.closures) state.closures = {};
+    if (!state.stockEntries) state.stockEntries = [];
+    state.products.forEach(p => {
+      if (typeof p.costPrice !== "number") p.costPrice = 0;
+      if (!p.unit) p.unit = "un";
+    });
+  } else {
+    state.products = [
+      { id: "p1", name: "Açúcar 1kg", price: 100, costPrice: 80, unit: "kg" },
+      { id: "p2", name: "Sabão em pó", price: 100, costPrice: 75, unit: "un" },
+      { id: "p3", name: "Óleo 750ml", price: 150, costPrice: 120, unit: "un" },
+      { id: "p4", name: "Arroz 1kg", price: 90, costPrice: 70, unit: "kg" },
+      { id: "p5", name: "Refrigerante lata", price: 50, costPrice: 35, unit: "un" },
+      { id: "p6", name: "Pão", price: 10, costPrice: 6, unit: "un" },
+      { id: "p7", name: "Cigarro (maço)", price: 120, costPrice: 100, unit: "un" },
+      { id: "p8", name: "Sal 1kg", price: 30, costPrice: 20, unit: "kg" }
+    ];
+    saveState();
+  }
+}
+function saveState() { localStorage.setItem("controlo_vendas_v1", 
